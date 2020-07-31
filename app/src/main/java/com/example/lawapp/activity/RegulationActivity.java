@@ -3,6 +3,10 @@ package com.example.lawapp.activity;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -37,6 +41,9 @@ public class RegulationActivity extends AppCompatActivity {
     TableLayout chapterTableLayout;
     TableLayout regulationTableLayout;
 
+    ImageView goBackImageView;
+    TextView withdrawTextView;
+
     /**
      * 所属法律编码
      */
@@ -48,6 +55,8 @@ public class RegulationActivity extends AppCompatActivity {
 
     ChapterDaoImpl chapterDaoImpl;
     RegulationDaoImpl regulationDaoImpl;
+
+    ScrollView scrollView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +73,13 @@ public class RegulationActivity extends AppCompatActivity {
         chapterTableLayout = findViewById(R.id.chapter_table);
         regulationTableLayout = findViewById(R.id.regulation_table);
 
+        goBackImageView = findViewById(R.id.go_back);
+        goBackImageView.setOnClickListener(new GoBackOnClick());
+        withdrawTextView = findViewById(R.id.withdraw);
+        withdrawTextView.setOnClickListener(new GoBackOnClick());
+
+        scrollView = findViewById(R.id.scroll);
+
         showTable();
     }
 
@@ -79,7 +95,7 @@ public class RegulationActivity extends AppCompatActivity {
     }
 
     /**
-     * 显示表格
+     * 显示表格(第一个循环中获取章节目录，第二个循环中获取改章节下的所有条例)
      */
     private void showTable() {
         chapterTableLayout.removeAllViews();
@@ -118,6 +134,8 @@ public class RegulationActivity extends AppCompatActivity {
             tableRow.setBackgroundColor(0xFFFFAD01);
             regulationTableLayout.addView(tableRow);
 
+            chapterTableRow.setOnClickListener(new ChapterOnClick(tableRow,regulationTableLayout));
+
             List<Regulation> regulationsList;
             regulationsList = regulationDaoImpl.selectRegulation(chapter.getChapterId());
 
@@ -144,16 +162,36 @@ public class RegulationActivity extends AppCompatActivity {
                 regulationTableLayout.addView(regulationTableRow);
             }
         }
+    }
 
+    /**
+     * 目录的点击效果（输入要跳转到的y轴坐标）
+     */
+    private class ChapterOnClick implements View.OnClickListener {
+        TableRow tableRow;
+        TableLayout tableLayout;
 
+        /**
+         *
+         * @param tableRow 需要移动到控件位置的控件
+         * @param tableLayout 该控件的父控件
+         */
+        public ChapterOnClick(TableRow tableRow,TableLayout tableLayout) {
+            this.tableRow = tableRow;
+            this.tableLayout = tableLayout;
+        }
 
-
+        @Override
+        public void onClick(View view) {
+            int moveY = tableRow.getTop()+tableLayout.getTop();
+            scrollView.scrollTo(0, moveY);
+        }
     }
 
     /**
      * 获取所属法律的信息
      *
-     * @param lawId 所属法律编码
+     * @param lawId   所属法律编码
      * @param lawName 所属法律名字
      */
     public static void setLaw(int lawId, String lawName) {

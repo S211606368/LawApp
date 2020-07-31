@@ -12,8 +12,7 @@ public class Code {
     private String codeName;
 
     /**
-     *
-     * @param codeId 法典id
+     * @param codeId   法典id
      * @param codeName 法典名字
      */
     public Code(int codeId, String codeName) {

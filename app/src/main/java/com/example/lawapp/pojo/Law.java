@@ -40,8 +40,7 @@ public class Law {
     private String lawContent;
 
     /**
-     *
-     * @param lawId 法律id（每本法典下的子法）
+     * @param lawId   法律id（每本法典下的子法）
      * @param lawName 法律名字
      */
     public Law(int lawId, String lawName) {

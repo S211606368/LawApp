@@ -112,7 +112,7 @@ public class LawActivity extends AppCompatActivity {
             }
             row++;
 
-             tableRow.setOnClickListener(new LawOnClick(law.getLawId(),law.getLawName()));
+            tableRow.setOnClickListener(new LawOnClick(law.getLawId(), law.getLawName()));
             tableLayout.addView(tableRow);
         }
     }
@@ -132,7 +132,7 @@ public class LawActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View view) {
-            RegulationActivity.setLaw(lawId,lawName);
+            RegulationActivity.setLaw(lawId, lawName);
             Intent intent = new Intent(LawActivity.this, RegulationActivity.class);
             startActivity(intent);
         }

@@ -12,12 +12,11 @@ public class Chapter {
     private String chapterContent;
 
     /**
-     *
-     * @param chapterId 章节id
-     * @param chapterName 章节名字
+     * @param chapterId      章节id
+     * @param chapterName    章节名字
      * @param chapterContent 章节内容
      */
-    public Chapter(int chapterId,String chapterName,String chapterContent){
+    public Chapter(int chapterId, String chapterName, String chapterContent) {
         this.chapterId = chapterId;
         this.chapterName = chapterName;
         this.chapterContent = chapterContent;

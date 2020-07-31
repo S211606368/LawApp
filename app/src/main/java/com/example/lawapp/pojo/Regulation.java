@@ -13,13 +13,12 @@ public class Regulation {
     private String regulationContent;
 
     /**
-     *
-     * @param regulationId 条例id
-     * @param chapterId 条例所属章节的id
-     * @param regulationName 条例名字
+     * @param regulationId      条例id
+     * @param chapterId         条例所属章节的id
+     * @param regulationName    条例名字
      * @param regulationContent 条例内容
      */
-    public Regulation(int regulationId,int chapterId,String regulationName,String regulationContent){
+    public Regulation(int regulationId, int chapterId, String regulationName, String regulationContent) {
         this.regulationId = regulationId;
         this.chapterId = chapterId;
         this.regulationName = regulationName;

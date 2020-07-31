@@ -29,7 +29,7 @@ public class ChapterDaoImpl implements ChapterDao {
 
         List<String[]> stringList = sqlStatement.selectView(row, table);
         for (String[] str : stringList) {
-            Chapter chapter = new Chapter(Integer.parseInt(str[0]), str[1],str[2]);
+            Chapter chapter = new Chapter(Integer.parseInt(str[0]), str[1], str[2]);
             chapterList.add(chapter);
         }
 

@@ -10,13 +10,14 @@ import java.util.List;
 
 /**
  * 法律条例接口的实现类
+ *
  * @author LIN
  */
 public class RegulationDaoImpl implements RegulationDao {
 
     SqlStatement sqlStatement;
 
-    public RegulationDaoImpl(){
+    public RegulationDaoImpl() {
         sqlStatement = new SqlStatement();
     }
 
@@ -29,7 +30,7 @@ public class RegulationDaoImpl implements RegulationDao {
 
         List<String[]> stringList = sqlStatement.selectView(row, table);
         for (String[] str : stringList) {
-            Regulation regulation = new Regulation(Integer.parseInt(str[0]), Integer.parseInt(str[1]),str[2],str[3]);
+            Regulation regulation = new Regulation(Integer.parseInt(str[0]), Integer.parseInt(str[1]), str[2], str[3]);
             regulationList.add(regulation);
         }
         return regulationList;
