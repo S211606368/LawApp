@@ -29,10 +29,10 @@ public class LawDaoImpl implements LawDao {
     }
 
     @Override
-    public List<Law> selectLaw() {
+    public List<Law> selectLaw(int codeId) {
         List<Law> lawList = new ArrayList<>();
         String row = "law_id,law_name";
-        String table = "LAWS";
+        String table = "LAWS where code_id = " + codeId;
 
         List<String[]> stringList = sqlStatement.selectView(row, table);
         for (String[] str : stringList) {

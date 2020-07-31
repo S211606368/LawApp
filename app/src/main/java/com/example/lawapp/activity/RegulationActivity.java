@@ -101,7 +101,7 @@ public class RegulationActivity extends AppCompatActivity {
         chapterTableLayout.removeAllViews();
         chapterTableLayout.setStretchAllColumns(true);
         List<Chapter> chaptersList;
-        chaptersList = chapterDaoImpl.selectChapter();
+        chaptersList = chapterDaoImpl.selectChapter(lawId);
         String chapters;
 
         int row = 0;

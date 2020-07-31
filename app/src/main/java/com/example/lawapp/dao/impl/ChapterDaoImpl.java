@@ -11,7 +11,9 @@ import java.util.List;
 /**
  * 章节接口的实现类
  *
- * @author LIN
+ * @author 林书浩
+ * @date 2020/7/31
+ * @lastDate 2020/7/31
  */
 public class ChapterDaoImpl implements ChapterDao {
 
@@ -22,10 +24,10 @@ public class ChapterDaoImpl implements ChapterDao {
     }
 
     @Override
-    public List<Chapter> selectChapter() {
+    public List<Chapter> selectChapter(int lawId) {
         List<Chapter> chapterList = new ArrayList<>();
         String row = "chapter_id,chapter_name,chapter_content";
-        String table = "CHAPTERS";
+        String table = "CHAPTERS where law_id = " + lawId;
 
         List<String[]> stringList = sqlStatement.selectView(row, table);
         for (String[] str : stringList) {

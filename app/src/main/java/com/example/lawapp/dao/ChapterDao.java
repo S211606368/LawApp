@@ -15,7 +15,8 @@ public interface ChapterDao {
     /**
      * 查询章节
      *
+     * @param lawId 所属法律的id
      * @return 返回章节集合（目录）
      */
-    public List<Chapter> selectChapter();
+    public List<Chapter> selectChapter(int lawId);
 }

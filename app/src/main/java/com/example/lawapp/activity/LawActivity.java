@@ -90,7 +90,7 @@ public class LawActivity extends AppCompatActivity {
         tableLayout.removeAllViews();
         tableLayout.setStretchAllColumns(true);
         List<Law> lawList;
-        lawList = lawDaoImpl.selectLaw();
+        lawList = lawDaoImpl.selectLaw(codeId);
         String lawName;
 
         int row = 0;
