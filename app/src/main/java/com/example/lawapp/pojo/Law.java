@@ -5,7 +5,7 @@ package com.example.lawapp.pojo;
  *
  * @author 林书浩
  * @date 2020/7/29
- * @lastDate 2020/7/29
+ * @lastDate 2020/7/31
  */
 public class Law {
 
@@ -39,6 +39,11 @@ public class Law {
      */
     private String lawContent;
 
+    /**
+     *
+     * @param lawId 法律id（每本法典下的子法）
+     * @param lawName 法律名字
+     */
     public Law(int lawId, String lawName) {
         this.lawId = lawId;
         this.lawName = lawName;

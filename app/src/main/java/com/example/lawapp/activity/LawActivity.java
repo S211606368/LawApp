@@ -15,6 +15,7 @@ import com.example.lawapp.R;
 import com.example.lawapp.dao.impl.LawDaoImpl;
 import com.example.lawapp.pojo.Code;
 import com.example.lawapp.pojo.Law;
+import com.example.lawapp.pojo.Regulation;
 import com.example.lawapp.service.sqlite.DatabaseOpenHelper;
 
 import java.util.List;
@@ -22,12 +23,16 @@ import java.util.List;
 /**
  * @author 林书浩
  * @date 2020/7/29
- * @lastDate 2020/7/30
+ * @lastDate 2020/7/31
  */
 public class LawActivity extends AppCompatActivity {
     ImageView goBackImageView;
     TextView withdrawTextView;
-    TextView lawNameTextView;
+
+    /**
+     * 顶栏显示所属法典名字的文本框
+     */
+    TextView codeNameTextView;
 
     TableLayout tableLayout;
 
@@ -50,9 +55,8 @@ public class LawActivity extends AppCompatActivity {
         DatabaseOpenHelper.getInstance(LawActivity.this);
         lawDaoImpl = new LawDaoImpl();
 
-        lawNameTextView = findViewById(R.id.law_name);
-        lawNameTextView.setText(codeName);
-        System.out.println("=====" + codeId + codeName + "=====");
+        codeNameTextView = findViewById(R.id.code_name);
+        codeNameTextView.setText(codeName);
 
         goBackImageView = findViewById(R.id.go_back);
         goBackImageView.setOnClickListener(new GoBackOnClick());
@@ -63,6 +67,9 @@ public class LawActivity extends AppCompatActivity {
         showTable();
     }
 
+    /**
+     * 返回上一页面
+     */
     private class GoBackOnClick implements View.OnClickListener {
 
         @Override
@@ -105,7 +112,7 @@ public class LawActivity extends AppCompatActivity {
             }
             row++;
 
-            /* tableRow.setOnClickListener(new LawActivity().LawOnClick(code.getCodeId(),code.getCodeName()));*/
+             tableRow.setOnClickListener(new LawOnClick(law.getLawId(),law.getLawName()));
             tableLayout.addView(tableRow);
         }
     }
@@ -125,8 +132,8 @@ public class LawActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View view) {
-            LawActivity.setCode(lawId, lawName);
-            Intent intent = new Intent(LawActivity.this, LawActivity.class);
+            RegulationActivity.setLaw(lawId,lawName);
+            Intent intent = new Intent(LawActivity.this, RegulationActivity.class);
             startActivity(intent);
         }
     }
