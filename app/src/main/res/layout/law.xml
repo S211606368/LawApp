@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.MainActivity">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:stretchColumns="*"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorTopBackground"
+            android:stretchColumns="1">
+
+            <TableRow android:background="@color/colorTopBackground">
+
+                <ImageView
+                    android:id="@+id/go_back"
+                    android:layout_width="@dimen/qb_px_60"
+                    android:layout_height="@dimen/qb_px_60"
+                    android:layout_gravity="center"
+                    android:background="@drawable/go_back" />
+
+                <TextView
+                    android:id="@+id/law_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/qb_px_60"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="交通法规"
+                    android:textColor="#FFFFFFFF"
+                    android:textSize="@dimen/qb_px_30" />
+
+                <TextView
+                    android:id="@+id/withdraw"
+                    android:layout_width="@dimen/qb_px_60"
+                    android:layout_height="@dimen/qb_px_60"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/qb_px_10"
+                    android:gravity="center"
+                    android:text="返回"
+                    android:textColor="#FFFFFFFF"
+                    android:textSize="@dimen/qb_px_30" />
+            </TableRow>
+        </TableLayout>
+
+        <ScrollView>
+
+            <TableLayout
+                android:id="@+id/table"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/qb_px_10"
+                android:layout_marginStart="@dimen/qb_px_10"
+                android:layout_marginEnd="@dimen/qb_px_15"
+                android:stretchColumns="*"
+                android:shrinkColumns="*">
+
+            </TableLayout>
+        </ScrollView>
+
+    </TableLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
