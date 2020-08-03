@@ -40,50 +40,52 @@
                     android:textSize="@dimen/qb_px_20" />
 
                 <TextView
-                    android:id="@+id/withdraw"
+                    android:id="@+id/index"
                     android:layout_width="@dimen/qb_px_60"
                     android:layout_height="@dimen/qb_px_60"
                     android:layout_gravity="center"
                     android:layout_marginEnd="@dimen/qb_px_10"
                     android:gravity="center"
-                    android:text="返回"
+                    android:text="索引"
                     android:textColor="#FFFFFFFF"
                     android:textSize="@dimen/qb_px_30" />
             </TableRow>
         </TableLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/qb_px_40"
+            android:layout_marginTop="@dimen/qb_px_10"
+            android:layout_marginBottom="@dimen/qb_px_10"
+            android:layout_marginStart="@dimen/qb_px_10"
+            android:layout_marginEnd="@dimen/qb_px_10"
+            android:background="@drawable/index_backguound">
+
+            <ImageView
+            android:layout_width="@dimen/qb_px_30"
+            android:layout_height="@dimen/qb_px_30"
+                android:layout_marginStart="@dimen/qb_px_10"
+                android:layout_gravity="center"
+            android:background="@drawable/select"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:hint="全文检索"
+                android:textSize="@dimen/qb_px_20"
+                />
+        </LinearLayout>
+
+
+
 
         <ScrollView android:id="@+id/scroll">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/qb_px_10"
                 android:layout_marginStart="@dimen/qb_px_10"
                 android:layout_marginEnd="@dimen/qb_px_10"
                 android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/qb_px_45"
-                    android:gravity="center"
-                    android:text="目录"
-                    android:textSize="@dimen/qb_px_30" />
-
-                <TableLayout
-                    android:id="@+id/chapter_table"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:stretchColumns="*"
-                    android:shrinkColumns="*">
-
-                </TableLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/qb_px_45"
-                    android:gravity="center"
-                    android:text="正文"
-                    android:textSize="@dimen/qb_px_30" />
 
                 <TableLayout
                     android:id="@+id/regulation_table"
@@ -92,12 +94,7 @@
                     android:stretchColumns="*"
                     android:shrinkColumns="*">
 
-
                 </TableLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/qb_px_20" />
 
             </LinearLayout>
 
