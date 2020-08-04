@@ -9,6 +9,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/qb_px_120"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,21 +20,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:stretchColumns="*">
-            <TextView
-                android:text="1"
-                android:textSize="@dimen/qb_px_40"/>
-            <TextView
-                android:text="1"
-                android:textSize="@dimen/qb_px_40"/>
-            <TextView
-                android:text="1"
-                android:textSize="@dimen/qb_px_40"/>
-            <TextView
-                android:text="1"
-                android:textSize="@dimen/qb_px_40"/>
-            <TextView
-                android:text="1"
-                android:textSize="@dimen/qb_px_40"/>
 
         </TableLayout>
     </ScrollView>

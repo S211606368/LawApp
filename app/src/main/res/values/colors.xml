@@ -7,6 +7,6 @@
     <color name="colorGray">#AAAAAAAA</color>
     <color name="colorBlue">#8D4B95E0</color>
     <color name="colorOrange">#FFFFAD01</color>
-    <color name="colorTextColor">#FFFFFFFF</color>
+    <color name="colorBackgroundWhite">#fafafa</color>
     <color name="colorChapterBackground">#FFAD01</color>
 </resources>

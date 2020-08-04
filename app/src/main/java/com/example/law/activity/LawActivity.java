@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -14,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.law.R;
 import com.example.law.dao.impl.LawDaoImpl;
 import com.example.law.pojo.Law;
+import com.example.law.service.function.LayoutFunction;
 import com.example.law.service.sqlite.DatabaseOpenHelper;
 
 import java.util.List;
@@ -24,26 +26,13 @@ import java.util.List;
  * @lastDate 2020/08/03
  */
 public class LawActivity extends AppCompatActivity {
-    ImageView goBackImageView;
     TextView withdrawTextView;
 
-    /**
-     * 顶栏显示所属法典名字的文本框
-     */
-    TextView codeNameTextView;
-
-    TableLayout tableLayout;
-
-    /**
-     * 所属法典编码
-     */
-    public static int codeId;
-    /**
-     * 所属法典名字
-     */
-    public static String codeName;
+    TableLayout lawTableLayout;
 
     LawDaoImpl lawDaoImpl;
+
+    LayoutFunction layoutFunction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,15 +42,12 @@ public class LawActivity extends AppCompatActivity {
         DatabaseOpenHelper.getInstance(LawActivity.this);
         lawDaoImpl = new LawDaoImpl();
 
-        codeNameTextView = findViewById(R.id.code_name);
-        codeNameTextView.setText(codeName);
+        withdrawTextView = findViewById(R.id.law_select);
+        withdrawTextView.setOnClickListener(new LawSelectOnClick());
 
-        goBackImageView = findViewById(R.id.go_back);
-        goBackImageView.setOnClickListener(new GoBackOnClick());
-        withdrawTextView = findViewById(R.id.withdraw);
-        withdrawTextView.setOnClickListener(new GoBackOnClick());
+        layoutFunction = new LayoutFunction(LawActivity.this);
 
-        tableLayout = findViewById(R.id.table);
+        lawTableLayout = findViewById(R.id.table);
         showTable();
     }
 
@@ -76,42 +62,42 @@ public class LawActivity extends AppCompatActivity {
         }
     }
 
-    public static void setCode(int codeId, String codeName) {
-        LawActivity.codeId = codeId;
-        LawActivity.codeName = codeName;
+    private class LawSelectOnClick implements View.OnClickListener {
+
+        @Override
+        public void onClick(View view) {
+
+        }
     }
 
     /**
      * 显示表格
      */
     private void showTable() {
-        tableLayout.removeAllViews();
-        tableLayout.setStretchAllColumns(true);
+        lawTableLayout.removeAllViews();
+        lawTableLayout.setStretchAllColumns(true);
         List<Law> lawList;
-        lawList = lawDaoImpl.selectLaw(codeId);
+        lawList = lawDaoImpl.selectLaw();
         String lawName;
 
         int row = 0;
         for (Law law : lawList) {
-            TableRow lawTableRow = new TableRow(LawActivity.this);
+            LinearLayout lawLinearLayout = new LinearLayout(LawActivity.this);
 
             TextView lawTextView = new TextView(LawActivity.this);
             lawName = law.getLawName();
             lawTextView.setText(lawName);
-            lawTextView.setTextColor(0xFFFFFFFF);
             lawTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.qb_px_30));
 
-            lawTableRow.addView(lawTextView);
+            lawLinearLayout.setOnClickListener(new LawOnClick(law.getLawId(), law.getLawName()));
 
-            if (row % 2 == 0) {
-                lawTableRow.setBackground(this.getDrawable(R.drawable.gray_change_orange));
-            } else {
-                lawTableRow.setBackground(this.getDrawable(R.drawable.blue_change_orange));
-            }
-            row++;
+            layoutFunction.topSplitLines(lawLinearLayout);
+            lawLinearLayout.addView(lawTextView);
+            layoutFunction.blankLines(lawLinearLayout);
+            lawLinearLayout.setBackground(this.getDrawable(R.drawable.white_change_gray));
 
-            lawTableRow.setOnClickListener(new LawOnClick(law.getLawId(), law.getLawName()));
-            tableLayout.addView(lawTableRow);
+            lawTableLayout.addView(lawLinearLayout);
+
         }
     }
 
@@ -131,13 +117,8 @@ public class LawActivity extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             RegulationActivity.setLaw(lawId, lawName);
-            try {
-                Thread.sleep(300);
-                Intent intent = new Intent(LawActivity.this, RegulationActivity.class);
-                startActivity(intent);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            Intent intent = new Intent(LawActivity.this, RegulationActivity.class);
+            startActivity(intent);
 
         }
     }

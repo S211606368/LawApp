@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.example.law.R;
 import com.example.law.dao.impl.CodeDaoImpl;
 import com.example.law.pojo.Code;
+import com.example.law.service.function.LayoutFunction;
 import com.example.law.service.sqlite.DatabaseOpenHelper;
 
 import java.util.List;
@@ -27,7 +28,9 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     CodeDaoImpl codeDaoImpl;
 
-    TableLayout tableLayout;
+    TableLayout codeTableLayout;
+
+    LayoutFunction layoutFunction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +40,9 @@ public class MainActivity extends AppCompatActivity {
         DatabaseOpenHelper.getInstance(MainActivity.this);
         codeDaoImpl = new CodeDaoImpl();
 
-        tableLayout = findViewById(R.id.table);
+        layoutFunction = new LayoutFunction(MainActivity.this);
+
+        codeTableLayout = findViewById(R.id.table);
         showTable();
     }
 
@@ -45,35 +50,27 @@ public class MainActivity extends AppCompatActivity {
      * 显示表格
      */
     private void showTable() {
-        tableLayout.removeAllViews();
-        tableLayout.setStretchAllColumns(true);
+        codeTableLayout.removeAllViews();
+        codeTableLayout.setStretchAllColumns(true);
         List<Code> codeList;
         codeList = codeDaoImpl.selectCode();
         String codeName;
 
-        int row = 0;
         for (Code code : codeList) {
             TableRow codeTableRow = new TableRow(MainActivity.this);
 
             TextView codeTextView = new TextView(MainActivity.this);
             codeName = "    " + code.getCodeName();
             codeTextView.setText(codeName);
-            codeTextView.setTextColor(0xFFFFFFFF);
             codeTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.qb_px_30));
 
             codeTableRow.addView(codeTextView);
             codeTableRow.setClickable(true);
 
-            if (row % 2 == 0) {
-                codeTableRow.setBackground(this.getDrawable(R.drawable.gray_change_orange));
-            } else {
-                codeTableRow.setBackground(this.getDrawable(R.drawable.blue_change_orange));
-            }
-            row++;
-
             codeTableRow.setOnClickListener(new CodeOnClick(code.getCodeId(), code.getCodeName()));
-            tableLayout.addView(codeTableRow);
+            codeTableLayout.addView(codeTableRow);
 
+            layoutFunction.topSplitLines(codeTableLayout);
         }
     }
 
@@ -92,14 +89,9 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View view) {
-            LawActivity.setCode(codeId, codeName);
-            try {
-                Thread.sleep(300);
-                Intent intent = new Intent(MainActivity.this, LawActivity.class);
-                startActivity(intent);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            /*LawActivity.setCode(codeId, codeName);
+            Intent intent = new Intent(MainActivity.this, LawActivity.class);
+            startActivity(intent);*/
 
         }
     }

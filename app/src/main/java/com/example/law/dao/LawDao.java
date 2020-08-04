@@ -18,7 +18,7 @@ public interface LawDao {
      * @param codeId 所属法典id
      * @return 返回法律集合
      */
-    public List<Law> selectLaw(int codeId);
+    public List<Law> selectLaw();
 
 
 }
