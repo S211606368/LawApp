@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -82,23 +80,22 @@ public class LawActivity extends AppCompatActivity {
 
         int row = 0;
         for (Law law : lawList) {
-            LinearLayout lawLinearLayout = new LinearLayout(LawActivity.this);
+            TableRow lawTableRow = new TableRow(LawActivity.this);
 
             TextView lawTextView = new TextView(LawActivity.this);
             lawName = law.getLawName();
             lawTextView.setText(lawName);
-            lawTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.qb_px_30));
+            lawTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.qb_px_20));
 
-            lawLinearLayout.setOnClickListener(new LawOnClick(law.getLawId(), law.getLawName()));
+            lawTableRow.setOnClickListener(new LawOnClick(law.getLawId(), law.getLawName()));
 
-            layoutFunction.topSplitLines(lawLinearLayout);
-            lawLinearLayout.addView(lawTextView);
-            layoutFunction.blankLines(lawLinearLayout);
-            lawLinearLayout.setBackground(this.getDrawable(R.drawable.white_change_gray));
+            layoutFunction.splitLines(lawTableLayout);
+            lawTableRow.addView(lawTextView);
+            lawTableRow.setBackground(this.getDrawable(R.drawable.white_change_gray));
 
-            lawTableLayout.addView(lawLinearLayout);
-
+            lawTableLayout.addView(lawTableRow);
         }
+        layoutFunction.splitLines(lawTableLayout);
     }
 
     /**

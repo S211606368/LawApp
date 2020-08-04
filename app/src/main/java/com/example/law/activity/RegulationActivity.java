@@ -1,11 +1,14 @@
 package com.example.law.activity;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -15,6 +18,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.example.law.R;
 import com.example.law.dao.impl.ChapterDaoImpl;
@@ -24,6 +28,7 @@ import com.example.law.pojo.Regulation;
 import com.example.law.service.function.LayoutFunction;
 import com.example.law.service.sqlite.DatabaseOpenHelper;
 
+import java.nio.file.Watchable;
 import java.util.List;
 
 /**
@@ -47,6 +52,8 @@ public class RegulationActivity extends AppCompatActivity {
 
     ImageView goBackImageView;
     TextView indexTextView;
+
+    int onClickId = -2;
 
     /**
      * 所属法律编码
@@ -129,7 +136,6 @@ public class RegulationActivity extends AppCompatActivity {
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if (indexWindowView.isShown()){
                     indexWindow.dismiss();
-                    indexWindow = null;
                 }
                 return false;
             }
@@ -145,17 +151,17 @@ public class RegulationActivity extends AppCompatActivity {
      *
      * @param chapters 章节名字
      * @param chapterTextSize 字体大小
-     * @param chapterLinearLayout 获取该章节所在的位置
+     * @param chapterTableRow 获取该章节所在的位置
      */
-    private void showIndexList(String chapters,int chapterTextSize,LinearLayout chapterLinearLayout){
-        int length = 8;
+    private void showIndexList(String chapters,int chapterTextSize,TableRow chapterTableRow){
+        /*int length = 8;
         if (chapters.length() > length){
             chapters = chapters.substring(0,length) + "…";
-        }
+        }*/
 
-        LinearLayout indexLinearLayout = createTableRow(chapters,chapterTextSize);
+        LinearLayout indexLinearLayout = createTableRow(chapters,chapterTextSize,-1);
         indexLinearLayout.setBackground(this.getDrawable(R.drawable.white_change_gray));
-        indexLinearLayout.setOnClickListener(new ChapterOnClick(chapterLinearLayout,regulationTableLayout,indexWindow));
+        indexLinearLayout.setOnClickListener(new ChapterOnClick(chapterTableRow,regulationTableLayout,indexWindow));
         indexTableLayout.addView(indexLinearLayout);
 
     }
@@ -175,16 +181,15 @@ public class RegulationActivity extends AppCompatActivity {
             int chapterTextSize;
             String chapters;
 
-            chapterTextSize = getResources().getDimensionPixelSize(R.dimen.qb_px_30);
+            chapterTextSize = getResources().getDimensionPixelSize(R.dimen.qb_px_20);
             chapters = chapter.getChapterName() + "  " + chapter.getChapterContent();
 
-            LinearLayout chapterLinearLayout = createTableRow(chapters,chapterTextSize);
+            TableRow chapterTableRow = createTableRow("\n"+chapters,chapterTextSize,-1);
 
-            layoutFunction.topSplitLines(regulationTableLayout);
-            regulationTableLayout.addView(chapterLinearLayout);
-            layoutFunction.blankLines(regulationTableLayout);
+            regulationTableLayout.addView(chapterTableRow);
 
-            showIndexList(chapters,chapterTextSize,chapterLinearLayout);
+
+            showIndexList(chapters,chapterTextSize,chapterTableRow);
 
 
             List<Regulation> regulationsList;
@@ -195,15 +200,15 @@ public class RegulationActivity extends AppCompatActivity {
 
             for (Regulation regulation : regulationsList) {
                 regulations = regulation.getRegulationName() + "  " + regulation.getRegulationContent();
-                int regulationTextSize = getResources().getDimensionPixelSize(R.dimen.qb_px_20);
+                int regulationTextSize = getResources().getDimensionPixelSize(R.dimen.qb_px_15);
 
-                LinearLayout regulationLinearLayout = createTableRow(regulations,regulationTextSize);
+                layoutFunction.splitLines(regulationTableLayout);
 
-                layoutFunction.topSplitLines(regulationTableLayout);
-                regulationTableLayout.addView(regulationLinearLayout);
-                layoutFunction.blankLines(regulationTableLayout);
+                TableRow regulationTableRow = createTableRow(regulations,regulationTextSize,regulation.getRegulationId());
+
+                regulationTableLayout.addView(regulationTableRow);
             }
-            layoutFunction.blankLines(regulationTableLayout);
+            layoutFunction.splitLines(regulationTableLayout);
         }
     }
 
@@ -213,18 +218,17 @@ public class RegulationActivity extends AppCompatActivity {
      * @param content 输入该行要显示的内容
      * @param textSide 该行字体大小
      */
-    private LinearLayout createTableRow(String content, int textSide){
-        LinearLayout linearLayout = new TableRow(RegulationActivity.this);
+    private TableRow createTableRow(String content, int textSide,int regulationId){
+        TableRow tableRow = new TableRow(RegulationActivity.this);
         TextView textView = new TextView(RegulationActivity.this);
 
         textView.setText(content);
         textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,textSide);
+        tableRow.addView(textView);
+        tableRow.setBackground(this.getDrawable(R.drawable.blue_change_orange));
 
-        linearLayout.addView(textView);
-        linearLayout.setBackground(this.getDrawable(R.drawable.white_change_gray));
-
-        linearLayout.setOnClickListener(new RegulationOnClick(content));
-        return linearLayout;
+        tableRow.setOnClickListener(new RegulationOnClick(tableRow));
+        return tableRow;
 
     }
 
@@ -232,14 +236,16 @@ public class RegulationActivity extends AppCompatActivity {
      * 条例的点击效果
      */
     private class RegulationOnClick implements View.OnClickListener{
-        String regulationOnClick;
+        TableRow regulationTableRow;
 
-        public RegulationOnClick(String regulationOnClick){
-         this.regulationOnClick = regulationOnClick;
+        public RegulationOnClick(TableRow regulationTableRow){
+         this.regulationTableRow = regulationTableRow;
         }
         @Override
         public void onClick(View view) {
-
+            view.setFocusable(true);
+            view.requestFocus();
+            view.requestFocusFromTouch();
         }
     }
 
@@ -269,7 +275,6 @@ public class RegulationActivity extends AppCompatActivity {
             scrollView.scrollTo(0, moveY);
 
             indexWindow.dismiss();
-            indexWindow = null;
         }
     }
 

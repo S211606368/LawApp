@@ -62,15 +62,13 @@ public class MainActivity extends AppCompatActivity {
             TextView codeTextView = new TextView(MainActivity.this);
             codeName = "    " + code.getCodeName();
             codeTextView.setText(codeName);
-            codeTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.qb_px_30));
+            codeTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.qb_px_20));
 
             codeTableRow.addView(codeTextView);
             codeTableRow.setClickable(true);
 
             codeTableRow.setOnClickListener(new CodeOnClick(code.getCodeId(), code.getCodeName()));
             codeTableLayout.addView(codeTableRow);
-
-            layoutFunction.topSplitLines(codeTableLayout);
         }
     }
 
