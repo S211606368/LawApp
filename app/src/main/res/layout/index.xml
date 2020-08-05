@@ -8,20 +8,18 @@
     tools:context=".activity.RegulationActivity">
 
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/qb_px_125"
-        android:layout_marginStart="@dimen/qb_px_5"
-        android:layout_marginBottom="@dimen/qb_px_5"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <TableLayout
             android:id="@+id/chapter_table"
-            android:layout_width="match_parent"
+            android:layout_width="@dimen/qb_px_250"
             android:layout_height="wrap_content"
+            android:layout_gravity="end"
             android:stretchColumns="*">
 
         </TableLayout>

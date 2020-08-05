@@ -130,7 +130,7 @@ public class RegulationActivity extends AppCompatActivity {
     public void loadIndexWindow() {
         final View indexWindowView = getLayoutInflater().inflate(R.layout.index, null, false);
 
-        indexWindow = new PopupWindow(indexWindowView, getResources().getDimensionPixelSize(R.dimen.qb_px_250), ViewGroup.LayoutParams.MATCH_PARENT, true);
+        indexWindow = new PopupWindow(indexWindowView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
         indexWindow.setAnimationStyle(R.style.AnimationRightFade);
 
         indexWindowView.setBackground(this.getDrawable(R.drawable.index_frame));
