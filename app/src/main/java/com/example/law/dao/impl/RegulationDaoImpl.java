@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author LIN
  * @date 2020/07/29
- * @lastDate 2020/08/03
+ * @lastDate 2020/08/05
  */
 public class RegulationDaoImpl implements RegulationDao {
 
@@ -20,6 +20,21 @@ public class RegulationDaoImpl implements RegulationDao {
 
     public RegulationDaoImpl() {
         sqlStatementFunction = new SqlStatementFunction();
+    }
+
+    @Override
+    public List<Regulation> selectRegulation() {
+        List<Regulation> regulationList = new ArrayList<>();
+
+        String row = "regulation_id,chapter_id,regulation_name,regulation_content";
+        String table = "REGULATIONS";
+
+        List<String[]> stringList = sqlStatementFunction.selectView(row, table);
+        for (String[] str : stringList) {
+            Regulation regulation = new Regulation(Integer.parseInt(str[0]), Integer.parseInt(str[1]), str[2], str[3]);
+            regulationList.add(regulation);
+        }
+        return regulationList;
     }
 
     @Override
@@ -32,6 +47,7 @@ public class RegulationDaoImpl implements RegulationDao {
         List<String[]> stringList = sqlStatementFunction.selectView(row, table);
         for (String[] str : stringList) {
             Regulation regulation = new Regulation(Integer.parseInt(str[0]), Integer.parseInt(str[1]), str[2], str[3]);
+            regulation.setChapterId(chapterId);
             regulationList.add(regulation);
         }
         return regulationList;

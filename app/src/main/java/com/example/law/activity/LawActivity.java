@@ -28,7 +28,6 @@ import java.util.List;
  * @lastDate 2020/08/05
  */
 public class LawActivity extends AppCompatActivity {
-    TextView withdrawTextView;
 
     TableLayout lawTableLayout;
 
@@ -36,15 +35,7 @@ public class LawActivity extends AppCompatActivity {
 
     LayoutFunction layoutFunction;
 
-    TextView titleSelectTextView;
-    TextView fullTextSelectTextView;
-
     LinearLayout selectLinearLayout;
-
-    /**
-     * 判断是否是标题检索
-     */
-    boolean isTitleSelect = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,14 +45,6 @@ public class LawActivity extends AppCompatActivity {
         DatabaseOpenHelper.getInstance(LawActivity.this);
         lawDaoImpl = new LawDaoImpl();
 
-        withdrawTextView = findViewById(R.id.law_select);
-        withdrawTextView.setOnClickListener(new LawSelectOnClick());
-
-        titleSelectTextView = findViewById(R.id.title_select);
-        titleSelectTextView.setOnClickListener(new TitleSelectOnclick(LawActivity.this));
-        fullTextSelectTextView = findViewById(R.id.full_text_select);
-        fullTextSelectTextView.setOnClickListener(new FullTextSelectOnClick(LawActivity.this));
-
         selectLinearLayout = findViewById(R.id.select);
         selectLinearLayout.setOnClickListener(new SelectOnClick());
 
@@ -69,56 +52,6 @@ public class LawActivity extends AppCompatActivity {
 
         lawTableLayout = findViewById(R.id.table);
         showTable();
-    }
-
-    /**
-     * 标题检索按钮
-     */
-    private class TitleSelectOnclick implements View.OnClickListener {
-
-        Context context;
-
-        public TitleSelectOnclick(Context context){
-            this.context = context;
-        }
-
-        @Override
-        public void onClick(View view) {
-            isTitleSelect = true;
-            titleSelectTextView.setBackground(getDrawable(R.drawable.select_background));
-            titleSelectTextView.setTextColor(ContextCompat.getColor(context,R.color.colorBackgroundWhite));
-            fullTextSelectTextView.setBackground(getDrawable(R.drawable.not_select_background));
-            fullTextSelectTextView.setTextColor(ContextCompat.getColor(context,R.color.colorBlueDark));
-        }
-    }
-
-    /**
-     * 全文检索按钮
-     */
-    private class FullTextSelectOnClick implements View.OnClickListener {
-
-        Context context;
-
-        public FullTextSelectOnClick(Context context){
-            this.context = context;
-        }
-
-        @Override
-        public void onClick(View view) {
-            isTitleSelect = false;
-            titleSelectTextView.setBackground(getDrawable(R.drawable.not_select_background));
-            titleSelectTextView.setTextColor(ContextCompat.getColor(context,R.color.colorBlueDark));
-            fullTextSelectTextView.setBackground(getDrawable(R.drawable.select_background));
-            fullTextSelectTextView.setTextColor(ContextCompat.getColor(context,R.color.colorBackgroundWhite));
-        }
-    }
-
-    private class LawSelectOnClick implements View.OnClickListener {
-
-        @Override
-        public void onClick(View view) {
-
-        }
     }
 
     /**
@@ -139,18 +72,15 @@ public class LawActivity extends AppCompatActivity {
             lawName = law.getLawName();
             lawTextView.setText(lawName);
             lawTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.qb_px_20));
-            lawTextView.setMinLines(getResources().getDimensionPixelSize(R.dimen.qb_px_1));
             lawTextView.setGravity(Gravity.CENTER_VERTICAL);
 
             lawTableRow.setOnClickListener(new LawOnClick(law.getLawId(), law.getLawName()));
 
-            layoutFunction.splitLines(lawTableLayout);
             lawTableRow.addView(lawTextView);
             lawTableRow.setBackground(this.getDrawable(R.drawable.white_change_gray));
 
             lawTableLayout.addView(lawTableRow);
         }
-        layoutFunction.splitLines(lawTableLayout);
     }
 
     /**
@@ -175,11 +105,14 @@ public class LawActivity extends AppCompatActivity {
         }
     }
 
-    public class SelectOnClick implements View.OnClickListener{
+    /**
+     * 转到查询界面
+     */
+    public class SelectOnClick implements View.OnClickListener {
 
         @Override
         public void onClick(View view) {
-            SelectActivity.setIsTitleSelect(isTitleSelect);
+            SelectActivity.setIsTitleSelect(true);
             Intent intent = new Intent(LawActivity.this, SelectActivity.class);
             startActivity(intent);
         }

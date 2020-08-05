@@ -1,6 +1,8 @@
 package com.example.law.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.Layout;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -15,6 +17,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.example.law.R;
 import com.example.law.dao.impl.ChapterDaoImpl;
@@ -48,7 +51,7 @@ public class RegulationActivity extends AppCompatActivity {
     ImageView goBackImageView;
     TextView indexTextView;
 
-    int onClickId = -2;
+    LinearLayout fullTextSelectLinearLayout;
 
     /**
      * 所属法律编码
@@ -80,6 +83,9 @@ public class RegulationActivity extends AppCompatActivity {
         lawNameTextView = findViewById(R.id.law_name);
         lawNameTextView.setText(lawName);
 
+        fullTextSelectLinearLayout = findViewById(R.id.full_text_select);
+        fullTextSelectLinearLayout.setOnClickListener(new FullTextSelectOnClick());
+
         chapterTableLayout = findViewById(R.id.chapter_table);
         regulationTableLayout = findViewById(R.id.regulation_table);
 
@@ -102,6 +108,7 @@ public class RegulationActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View view) {
+            SelectActivity.setIsTitleSelect(true,-1);
             RegulationActivity.this.finish();
         }
     }
@@ -109,27 +116,29 @@ public class RegulationActivity extends AppCompatActivity {
     /**
      * 索引页面
      */
-    private class IndexOnClick implements View.OnClickListener{
+    private class IndexOnClick implements View.OnClickListener {
 
         @Override
         public void onClick(View view) {
-            indexWindow.showAtLocation(view, Gravity.RIGHT,0,0);
+            indexWindow.showAtLocation(view, Gravity.RIGHT, 0, 0);
         }
     }
 
     /**
      * 加载索引界面
      */
-    public void loadIndexWindow(){
-        final View indexWindowView = getLayoutInflater().inflate(R.layout.index,null,false);
+    public void loadIndexWindow() {
+        final View indexWindowView = getLayoutInflater().inflate(R.layout.index, null, false);
 
-        indexWindow = new PopupWindow(indexWindowView,getResources().getDimensionPixelSize(R.dimen.qb_px_250), ViewGroup.LayoutParams.MATCH_PARENT,true);
+        indexWindow = new PopupWindow(indexWindowView, getResources().getDimensionPixelSize(R.dimen.qb_px_250), ViewGroup.LayoutParams.MATCH_PARENT, true);
         indexWindow.setAnimationStyle(R.style.AnimationRightFade);
+
+        indexWindowView.setBackground(this.getDrawable(R.drawable.index_frame));
 
         indexWindowView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                if (indexWindowView.isShown()){
+                if (indexWindowView.isShown()) {
                     indexWindow.dismiss();
                 }
                 return false;
@@ -144,19 +153,19 @@ public class RegulationActivity extends AppCompatActivity {
     /**
      * 显示索引界面
      *
-     * @param chapters 章节名字
+     * @param chapters        章节名字
      * @param chapterTextSize 字体大小
      * @param chapterTableRow 获取该章节所在的位置
      */
-    private void showIndexList(String chapters,int chapterTextSize,TableRow chapterTableRow){
-        /*int length = 8;
+    private void showIndexList(String chapters, int chapterTextSize, TableRow chapterTableRow) {
+        int length = 13;
         if (chapters.length() > length){
             chapters = chapters.substring(0,length) + "…";
-        }*/
+        }
 
-        LinearLayout indexLinearLayout = createTableRow(chapters,chapterTextSize,-1);
+        LinearLayout indexLinearLayout = createTableRow(chapters, chapterTextSize);
         indexLinearLayout.setBackground(this.getDrawable(R.drawable.white_change_gray));
-        indexLinearLayout.setOnClickListener(new ChapterOnClick(chapterTableRow,regulationTableLayout,indexWindow));
+        indexLinearLayout.setOnClickListener(new ChapterOnClick(chapterTableRow, regulationTableLayout, indexWindow));
         indexTableLayout.addView(indexLinearLayout);
 
     }
@@ -179,12 +188,12 @@ public class RegulationActivity extends AppCompatActivity {
             chapterTextSize = getResources().getDimensionPixelSize(R.dimen.qb_px_20);
             chapters = chapter.getChapterName() + "  " + chapter.getChapterContent();
 
-            TableRow chapterTableRow = createTableRow("\n"+chapters,chapterTextSize,-1);
+            TableRow chapterTableRow = createTableRow(chapters, chapterTextSize);
 
             regulationTableLayout.addView(chapterTableRow);
 
 
-            showIndexList(chapters,chapterTextSize,chapterTableRow);
+            showIndexList(chapters, chapterTextSize, chapterTableRow);
 
 
             List<Regulation> regulationsList;
@@ -197,32 +206,27 @@ public class RegulationActivity extends AppCompatActivity {
                 regulations = regulation.getRegulationName() + "  " + regulation.getRegulationContent();
                 int regulationTextSize = getResources().getDimensionPixelSize(R.dimen.qb_px_15);
 
-                layoutFunction.splitLines(regulationTableLayout);
-
-                TableRow regulationTableRow = createTableRow(regulations,regulationTextSize,regulation.getRegulationId());
+                TableRow regulationTableRow = createTableRow(regulations, regulationTextSize);
 
                 regulationTableLayout.addView(regulationTableRow);
             }
-            layoutFunction.splitLines(regulationTableLayout);
         }
     }
 
     /**
      * 创建行
      *
-     * @param content 输入该行要显示的内容
+     * @param content  输入该行要显示的内容
      * @param textSide 该行字体大小
      */
-    private TableRow createTableRow(String content, int textSide,int regulationId){
+    private TableRow createTableRow(String content, int textSide) {
         TableRow tableRow = new TableRow(RegulationActivity.this);
         TextView textView = new TextView(RegulationActivity.this);
 
         textView.setText(content);
-        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,textSide);
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSide);
 
         tableRow.addView(textView);
-        textView.setTop(getResources().getDimensionPixelSize(R.dimen.qb_px_10));
-        textView.setBottom(getResources().getDimensionPixelSize(R.dimen.qb_px_10));
 
         tableRow.setBackground(this.getDrawable(R.drawable.white_change_gray));
 
@@ -234,12 +238,13 @@ public class RegulationActivity extends AppCompatActivity {
     /**
      * 条例的点击效果
      */
-    private class RegulationOnClick implements View.OnClickListener{
+    private class RegulationOnClick implements View.OnClickListener {
         TableRow regulationTableRow;
 
-        public RegulationOnClick(TableRow regulationTableRow){
-         this.regulationTableRow = regulationTableRow;
+        public RegulationOnClick(TableRow regulationTableRow) {
+            this.regulationTableRow = regulationTableRow;
         }
+
         @Override
         public void onClick(View view) {
             view.setFocusable(true);
@@ -257,12 +262,11 @@ public class RegulationActivity extends AppCompatActivity {
         PopupWindow indexWindow;
 
         /**
-         *
          * @param linearLayout 需要移动到控件位置的控件
-         * @param tableLayout 该控件的父控件
-         * @param indexWindow 弹出的窗口界面
+         * @param tableLayout  该控件的父控件
+         * @param indexWindow  弹出的窗口界面
          */
-        public ChapterOnClick(LinearLayout linearLayout,TableLayout tableLayout,PopupWindow indexWindow) {
+        public ChapterOnClick(LinearLayout linearLayout, TableLayout tableLayout, PopupWindow indexWindow) {
             this.linearLayout = linearLayout;
             this.tableLayout = tableLayout;
             this.indexWindow = indexWindow;
@@ -270,7 +274,7 @@ public class RegulationActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View view) {
-            int moveY = linearLayout.getTop()+tableLayout.getTop();
+            int moveY = linearLayout.getTop() + tableLayout.getTop();
             scrollView.scrollTo(0, moveY);
 
             indexWindow.dismiss();
@@ -288,4 +292,12 @@ public class RegulationActivity extends AppCompatActivity {
         RegulationActivity.lawName = lawName;
     }
 
+    private class FullTextSelectOnClick implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            SelectActivity.setIsTitleSelect(false, lawId);
+            Intent intent = new Intent(RegulationActivity.this, SelectActivity.class);
+            startActivity(intent);
+        }
+    }
 }

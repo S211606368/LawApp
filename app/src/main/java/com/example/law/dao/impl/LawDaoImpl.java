@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author 林书浩
  * @date 2020/07/29
- * @lastDate 2020/08/03
+ * @lastDate 2020/08/05
  */
 public class LawDaoImpl implements LawDao {
 
@@ -28,6 +28,21 @@ public class LawDaoImpl implements LawDao {
         List<Law> lawList = new ArrayList<>();
         String row = "law_id,law_name";
         String table = "LAWS";
+
+        List<String[]> stringList = sqlStatementFunction.selectView(row, table);
+        for (String[] str : stringList) {
+            Law law = new Law(Integer.parseInt(str[0]), str[1]);
+            lawList.add(law);
+        }
+
+        return lawList;
+    }
+
+    @Override
+    public List<Law> selectLaw(int lawId) {
+        List<Law> lawList = new ArrayList<>();
+        String row = "law_id,law_name";
+        String table = "LAWS where law_id = " + lawId;
 
         List<String[]> stringList = sqlStatementFunction.selectView(row, table);
         for (String[] str : stringList) {

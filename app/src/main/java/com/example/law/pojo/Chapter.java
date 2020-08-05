@@ -22,6 +22,19 @@ public class Chapter {
         this.chapterContent = chapterContent;
     }
 
+    /**
+     * @param chapterId      章节id
+     * @param lawId          所属法律id
+     * @param chapterName    章节名字
+     * @param chapterContent 章节内容
+     */
+    public Chapter(int chapterId, int lawId, String chapterName, String chapterContent) {
+        this.chapterId = chapterId;
+        this.lawId = lawId;
+        this.chapterName = chapterName;
+        this.chapterContent = chapterContent;
+    }
+
     public int getChapterId() {
         return chapterId;
     }

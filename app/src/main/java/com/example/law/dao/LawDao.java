@@ -9,16 +9,23 @@ import java.util.List;
  *
  * @author 林书浩
  * @date 2020/07/29
- * @lastDate 2020/08/03
+ * @lastDate 2020/08/05
  */
 public interface LawDao {
     /**
      * 查询所有法律
      *
-     * @param codeId 所属法典id
      * @return 返回法律集合
      */
     public List<Law> selectLaw();
+
+    /**
+     * 查询指定法律
+     *
+     * @param lawId 所需要查询的法律id
+     * @return 这条法律的信息
+     */
+    public List<Law> selectLaw(int lawId);
 
 
 }

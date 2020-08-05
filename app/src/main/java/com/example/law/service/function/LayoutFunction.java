@@ -10,18 +10,20 @@ import com.example.law.R;
 
 /**
  * 布局工具类（主要提供页面上的一些UI，如分割线）
+ *
  * @author 林书浩
  */
 public class LayoutFunction {
     Context context;
-    public LayoutFunction(Context context){
+
+    public LayoutFunction(Context context) {
         this.context = context;
     }
 
     /**
      * 空一行
      */
-    public void blankLines(TableLayout tableLayout){
+    public void blankLines(TableLayout tableLayout) {
         TextView blankTextView = new TextView(context);
         blankTextView.setBackground(context.getDrawable(R.drawable.blank_background));
         tableLayout.addView(blankTextView);
@@ -30,7 +32,7 @@ public class LayoutFunction {
     /**
      * 下分割线
      */
-    public void bottomSplitLines(TableLayout tableLayout){
+    public void bottomSplitLines(TableLayout tableLayout) {
         TextView splitTextView = new TextView(context);
         splitTextView.setBackground(context.getDrawable(R.drawable.bottom_line_background));
         tableLayout.addView(splitTextView);
@@ -39,7 +41,7 @@ public class LayoutFunction {
     /**
      * 上分割线
      */
-    public void topSplitLines(TableLayout tableLayout){
+    public void topSplitLines(TableLayout tableLayout) {
         TextView splitTextView = new TextView(context);
         splitTextView.setBackground(context.getDrawable(R.drawable.top_line_background));
         tableLayout.addView(splitTextView);
@@ -48,7 +50,7 @@ public class LayoutFunction {
     /**
      * 分割线
      */
-    public void splitLines(TableLayout tableLayout){
+    public void splitLines(TableLayout tableLayout) {
         TextView splitTextView = new TextView(context);
         splitTextView.setHeight(1);
         splitTextView.setBackground(context.getDrawable(R.drawable.line));

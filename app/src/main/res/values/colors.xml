@@ -10,4 +10,5 @@
     <color name="colorBackgroundWhite">#fafafa</color>
     <color name="colorChapterBackground">#FFAD01</color>
     <color name="colorBlueDark">#3F51B5</color>
+    <color name="colorBlack">#000000</color>
 </resources>

@@ -9,11 +9,19 @@ import java.util.List;
  *
  * @author 林书浩
  * @date 2020/07/31
- * @lastDate 2020/08/03
+ * @lastDate 2020/08/05
  */
 public interface ChapterDao {
+
     /**
-     * 查询章节
+     * 查询所有章节
+     *
+     * @return 返回章节集合
+     */
+    public List<Chapter> selectChapter();
+
+    /**
+     * 查询指定法律下的章节
      *
      * @param lawId 所属法律的id
      * @return 返回章节集合（目录）

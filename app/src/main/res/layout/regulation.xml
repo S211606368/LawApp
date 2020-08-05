@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -54,12 +53,14 @@
                     android:layout_gravity="center"
                     android:layout_marginEnd="@dimen/qb_px_10"
                     android:gravity="center"
-                    android:background="@drawable/law_list"
+                    android:background="@drawable/chapter_list"
                     android:textColor="#FFFFFFFF"
                     android:textSize="@dimen/qb_px_30" />
             </TableRow>
         </TableLayout>
+
         <LinearLayout
+            android:id="@+id/full_text_select"
             android:layout_width="match_parent"
             android:layout_height="@dimen/qb_px_40"
             android:layout_marginTop="@dimen/qb_px_10"
@@ -69,20 +70,19 @@
             android:background="@drawable/index_background">
 
             <ImageView
-            android:layout_width="@dimen/qb_px_30"
-            android:layout_height="@dimen/qb_px_30"
+                android:layout_width="@dimen/qb_px_30"
+                android:layout_height="@dimen/qb_px_30"
                 android:layout_marginStart="@dimen/qb_px_10"
                 android:layout_gravity="center"
-            android:background="@drawable/select"/>
+                android:background="@drawable/select" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:hint="全文检索"
-                android:textSize="@dimen/qb_px_20"                />
+                android:textSize="@dimen/qb_px_20" />
         </LinearLayout>
-
-
 
 
         <ScrollView
@@ -103,6 +103,10 @@
                     android:layout_height="wrap_content"
                     android:stretchColumns="*"
                     android:shrinkColumns="*">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
 
                 </TableLayout>
 

@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author 林书浩
  * @date 2020/07/31
- * @lastDate 2020/08/03
+ * @lastDate 2020/08/05
  */
 public class ChapterDaoImpl implements ChapterDao {
 
@@ -20,6 +20,21 @@ public class ChapterDaoImpl implements ChapterDao {
 
     public ChapterDaoImpl() {
         sqlStatementFunction = new SqlStatementFunction();
+    }
+
+    @Override
+    public List<Chapter> selectChapter() {
+        List<Chapter> chapterList = new ArrayList<>();
+        String row = "chapter_id,law_id,chapter_name,chapter_content";
+        String table = "CHAPTERS";
+
+        List<String[]> stringList = sqlStatementFunction.selectView(row, table);
+        for (String[] str : stringList) {
+            Chapter chapter = new Chapter(Integer.parseInt(str[0]), Integer.parseInt(str[1]), str[2], str[3]);
+            chapterList.add(chapter);
+        }
+
+        return chapterList;
     }
 
     @Override
@@ -31,6 +46,7 @@ public class ChapterDaoImpl implements ChapterDao {
         List<String[]> stringList = sqlStatementFunction.selectView(row, table);
         for (String[] str : stringList) {
             Chapter chapter = new Chapter(Integer.parseInt(str[0]), str[1], str[2]);
+            chapter.setLawId(lawId);
             chapterList.add(chapter);
         }
 

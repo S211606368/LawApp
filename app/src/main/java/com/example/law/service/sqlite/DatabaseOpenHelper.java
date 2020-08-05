@@ -117,7 +117,7 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
         String path = dataBasePath + "/" + DATABASE_NAME;
         File databaseFile = new File(path);
-        if (databaseFile.exists()){
+        if (databaseFile.exists()) {
             databaseFile.setExecutable(true, false);
             databaseFile.setReadable(true, false);
             databaseFile.setWritable(true, false);

@@ -9,14 +9,22 @@ import java.util.List;
  *
  * @author LIN
  * @date 2020/07/31
- * @lastDate 2020/08/03
+ * @lastDate 2020/08/05
  */
 public interface RegulationDao {
+
     /**
-     * 查询条例
+     * 查询所有法律条例
+     *
+     * @return 返回法律条例集合
+     */
+    public List<Regulation> selectRegulation();
+
+    /**
+     * 查询某一章节下的条例
      *
      * @param chapterId 传入所属章节的id
-     * @return 返回条例集合（正文）
+     * @return 返回条例集合
      */
     public List<Regulation> selectRegulation(int chapterId);
 }
