@@ -1,14 +1,11 @@
 package com.example.law.activity;
 
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -18,7 +15,6 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import com.example.law.R;
 import com.example.law.dao.impl.ChapterDaoImpl;
@@ -28,7 +24,6 @@ import com.example.law.pojo.Regulation;
 import com.example.law.service.function.LayoutFunction;
 import com.example.law.service.sqlite.DatabaseOpenHelper;
 
-import java.nio.file.Watchable;
 import java.util.List;
 
 /**
@@ -36,7 +31,7 @@ import java.util.List;
  *
  * @author 林书浩
  * @date 2020/07/31
- * @lastDate 2020/08/03
+ * @lastDate 2020/08/05
  */
 public class RegulationActivity extends AppCompatActivity {
 
@@ -224,8 +219,12 @@ public class RegulationActivity extends AppCompatActivity {
 
         textView.setText(content);
         textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,textSide);
+
         tableRow.addView(textView);
-        tableRow.setBackground(this.getDrawable(R.drawable.blue_change_orange));
+        textView.setTop(getResources().getDimensionPixelSize(R.dimen.qb_px_10));
+        textView.setBottom(getResources().getDimensionPixelSize(R.dimen.qb_px_10));
+
+        tableRow.setBackground(this.getDrawable(R.drawable.white_change_gray));
 
         tableRow.setOnClickListener(new RegulationOnClick(tableRow));
         return tableRow;

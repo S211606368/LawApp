@@ -9,4 +9,5 @@
     <color name="colorOrange">#FFFFAD01</color>
     <color name="colorBackgroundWhite">#fafafa</color>
     <color name="colorChapterBackground">#FFAD01</color>
+    <color name="colorBlueDark">#3F51B5</color>
 </resources>

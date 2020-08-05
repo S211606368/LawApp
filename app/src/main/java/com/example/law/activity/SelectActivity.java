@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -18,57 +18,56 @@ import com.example.law.R;
 import com.example.law.dao.impl.LawDaoImpl;
 import com.example.law.pojo.Law;
 import com.example.law.service.function.LayoutFunction;
-import com.example.law.service.sqlite.DatabaseOpenHelper;
 
 import java.util.List;
 
 /**
  * @author 林书浩
- * @date 2020/07/29
+ * @date 2020/08/05
  * @lastDate 2020/08/05
  */
-public class LawActivity extends AppCompatActivity {
-    TextView withdrawTextView;
-
-    TableLayout lawTableLayout;
-
-    LawDaoImpl lawDaoImpl;
-
-    LayoutFunction layoutFunction;
-
+public class SelectActivity extends AppCompatActivity {
     TextView titleSelectTextView;
     TextView fullTextSelectTextView;
 
-    LinearLayout selectLinearLayout;
+    TableLayout selectTableLayout;
+
+    LawDaoImpl lawDaoImpl;
+    LayoutFunction layoutFunction;
+
+    ImageView goBackImageView;
 
     /**
      * 判断是否是标题检索
      */
-    boolean isTitleSelect = true;
+    static boolean isTitleSelect = true;
+
+    /**
+     * 全文搜索的法律id，如果为-1则代表所有法律条文搜索
+     */
+    static int lawId = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.law);
+        setContentView(R.layout.select);
 
-        DatabaseOpenHelper.getInstance(LawActivity.this);
         lawDaoImpl = new LawDaoImpl();
 
-        withdrawTextView = findViewById(R.id.law_select);
-        withdrawTextView.setOnClickListener(new LawSelectOnClick());
+        selectTableLayout = findViewById(R.id.select_table);
+
+        goBackImageView = findViewById(R.id.go_back);
+        goBackImageView.setOnClickListener(new GoBackOnClick());
 
         titleSelectTextView = findViewById(R.id.title_select);
-        titleSelectTextView.setOnClickListener(new TitleSelectOnclick(LawActivity.this));
         fullTextSelectTextView = findViewById(R.id.full_text_select);
-        fullTextSelectTextView.setOnClickListener(new FullTextSelectOnClick(LawActivity.this));
+        titleSelectTextView.setOnClickListener(new TitleSelectOnclick(SelectActivity.this));
+        fullTextSelectTextView.setOnClickListener(new FullTextSelectOnClick(SelectActivity.this));
+        changeSelectStyle(SelectActivity.this);
 
-        selectLinearLayout = findViewById(R.id.select);
-        selectLinearLayout.setOnClickListener(new SelectOnClick());
-
-        layoutFunction = new LayoutFunction(LawActivity.this);
-
-        lawTableLayout = findViewById(R.id.table);
-        showTable();
+        /*if (isTitleSelect){
+            showLawTable();
+        }*/
     }
 
     /**
@@ -84,11 +83,8 @@ public class LawActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View view) {
-            isTitleSelect = true;
-            titleSelectTextView.setBackground(getDrawable(R.drawable.select_background));
-            titleSelectTextView.setTextColor(ContextCompat.getColor(context,R.color.colorBackgroundWhite));
-            fullTextSelectTextView.setBackground(getDrawable(R.drawable.not_select_background));
-            fullTextSelectTextView.setTextColor(ContextCompat.getColor(context,R.color.colorBlueDark));
+            SelectActivity.setIsTitleSelect(true);
+            changeSelectStyle(context);
         }
     }
 
@@ -105,37 +101,53 @@ public class LawActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View view) {
-            isTitleSelect = false;
+            SelectActivity.setIsTitleSelect(false);
+            changeSelectStyle(context);
+        }
+    }
+
+    public void changeSelectStyle(Context context){
+        if (isTitleSelect){
+            titleSelectTextView.setBackground(getDrawable(R.drawable.select_background));
+            titleSelectTextView.setTextColor(ContextCompat.getColor(context,R.color.colorBackgroundWhite));
+            fullTextSelectTextView.setBackground(getDrawable(R.drawable.not_select_background));
+            fullTextSelectTextView.setTextColor(ContextCompat.getColor(context,R.color.colorBlueDark));
+        }else {
             titleSelectTextView.setBackground(getDrawable(R.drawable.not_select_background));
             titleSelectTextView.setTextColor(ContextCompat.getColor(context,R.color.colorBlueDark));
             fullTextSelectTextView.setBackground(getDrawable(R.drawable.select_background));
             fullTextSelectTextView.setTextColor(ContextCompat.getColor(context,R.color.colorBackgroundWhite));
         }
     }
+    /**
+     * 获取当前是标题检索还是全文检索
+     *
+     * @param isTitleSelect
+     */
+    public static void setIsTitleSelect(boolean isTitleSelect) {
+        SelectActivity.isTitleSelect = isTitleSelect;
+    }
 
-    private class LawSelectOnClick implements View.OnClickListener {
-
-        @Override
-        public void onClick(View view) {
-
-        }
+    public static void setIsTitleSelect(boolean isTitleSelect,int lawId) {
+        SelectActivity.isTitleSelect = isTitleSelect;
+        SelectActivity.lawId = lawId;
     }
 
     /**
-     * 显示表格
+     * 显示法律表格
      */
-    private void showTable() {
-        lawTableLayout.removeAllViews();
-        lawTableLayout.setStretchAllColumns(true);
+    private void showLawTable() {
+        selectTableLayout.removeAllViews();
+        selectTableLayout.setStretchAllColumns(true);
         List<Law> lawList;
         lawList = lawDaoImpl.selectLaw();
         String lawName;
 
         int row = 0;
         for (Law law : lawList) {
-            TableRow lawTableRow = new TableRow(LawActivity.this);
+            TableRow lawTableRow = new TableRow(SelectActivity.this);
 
-            TextView lawTextView = new TextView(LawActivity.this);
+            TextView lawTextView = new TextView(SelectActivity.this);
             lawName = law.getLawName();
             lawTextView.setText(lawName);
             lawTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.qb_px_20));
@@ -144,13 +156,25 @@ public class LawActivity extends AppCompatActivity {
 
             lawTableRow.setOnClickListener(new LawOnClick(law.getLawId(), law.getLawName()));
 
-            layoutFunction.splitLines(lawTableLayout);
+            layoutFunction.splitLines(selectTableLayout);
+
             lawTableRow.addView(lawTextView);
             lawTableRow.setBackground(this.getDrawable(R.drawable.white_change_gray));
 
-            lawTableLayout.addView(lawTableRow);
+            selectTableLayout.addView(lawTableRow);
         }
-        layoutFunction.splitLines(lawTableLayout);
+        layoutFunction.splitLines(selectTableLayout);
+    }
+
+    /**
+     * 返回上一页面
+     */
+    private class GoBackOnClick implements View.OnClickListener {
+
+        @Override
+        public void onClick(View view) {
+            SelectActivity.this.finish();
+        }
     }
 
     /**
@@ -169,19 +193,9 @@ public class LawActivity extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             RegulationActivity.setLaw(lawId, lawName);
-            Intent intent = new Intent(LawActivity.this, RegulationActivity.class);
+            Intent intent = new Intent(SelectActivity.this, RegulationActivity.class);
             startActivity(intent);
 
-        }
-    }
-
-    public class SelectOnClick implements View.OnClickListener{
-
-        @Override
-        public void onClick(View view) {
-            SelectActivity.setIsTitleSelect(isTitleSelect);
-            Intent intent = new Intent(LawActivity.this, SelectActivity.class);
-            startActivity(intent);
         }
     }
 }

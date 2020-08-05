@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.RegulationActivity">
 
-    <TableLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:stretchColumns="*"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="vertical">
 
         <TableLayout
             android:layout_width="match_parent"
@@ -35,6 +37,12 @@
                     android:layout_height="@dimen/qb_px_60"
                     android:layout_gravity="center"
                     android:gravity="center"
+                    android:ellipsize="marquee"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:scrollHorizontally="true"
+                    android:singleLine="true"
                     android:text="交通法规"
                     android:textColor="#FFFFFFFF"
                     android:textSize="@dimen/qb_px_20" />
@@ -46,7 +54,7 @@
                     android:layout_gravity="center"
                     android:layout_marginEnd="@dimen/qb_px_10"
                     android:gravity="center"
-                    android:text="索引"
+                    android:background="@drawable/law_list"
                     android:textColor="#FFFFFFFF"
                     android:textSize="@dimen/qb_px_30" />
             </TableRow>
@@ -58,7 +66,7 @@
             android:layout_marginBottom="@dimen/qb_px_10"
             android:layout_marginStart="@dimen/qb_px_10"
             android:layout_marginEnd="@dimen/qb_px_10"
-            android:background="@drawable/index_backguound">
+            android:background="@drawable/index_background">
 
             <ImageView
             android:layout_width="@dimen/qb_px_30"
@@ -71,14 +79,16 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:hint="全文检索"
-                android:textSize="@dimen/qb_px_20"
-                />
+                android:textSize="@dimen/qb_px_20"                />
         </LinearLayout>
 
 
 
 
-        <ScrollView android:id="@+id/scroll">
+        <ScrollView
+            android:id="@+id/scroll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -100,7 +110,7 @@
 
         </ScrollView>
 
-    </TableLayout>
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

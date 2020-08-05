@@ -18,6 +18,7 @@
             </intent-filter>
         </activity>
         <activity android:name="com.example.law.activity.RegulationActivity" />
+        <activity android:name="com.example.law.activity.SelectActivity" />
     </application>
 
 </manifest>

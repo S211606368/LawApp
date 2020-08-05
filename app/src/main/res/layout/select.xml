@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.LawActivity">
+    tools:context=".activity.SelectActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,19 +27,20 @@
                 <ImageView
                     android:id="@+id/go_back"
                     android:layout_width="@dimen/qb_px_40"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center" />
+                    android:layout_height="@dimen/qb_px_40"
+                    android:layout_gravity="center"
+                    android:background="@drawable/go_back"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/qb_px_40"
                     android:layout_gravity="center"
-                    android:text="法律法规"
+                    android:text="请输入文字进行搜索"
                     android:textColor="#FFFFFFFF"
                     android:textSize="@dimen/qb_px_30" />
 
                 <TextView
-                    android:id="@+id/law_select"
+                    android:id="@+id/setting"
                     android:layout_width="@dimen/qb_px_40"
                     android:layout_height="@dimen/qb_px_40"
                     android:layout_gravity="center"
@@ -51,7 +52,6 @@
             </TableRow>
         </TableLayout>
         <LinearLayout
-            android:id="@+id/select"
             android:layout_width="match_parent"
             android:layout_height="@dimen/qb_px_40"
             android:layout_marginTop="@dimen/qb_px_10"
@@ -65,12 +65,17 @@
                 android:layout_marginStart="@dimen/qb_px_10"
                 android:layout_gravity="center"
                 android:background="@drawable/select"/>
-            <TextView
+            <com.wyt.searchedittext.SearchEditText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
+                android:textColor="@color/colorBackgroundWhite"
+                android:background="#00FFFFFF"
                 android:hint="搜索"
                 android:textSize="@dimen/qb_px_20"
+                android:imeOptions="actionNone"
+                android:singleLine="true"
+                android:focusable="true"
                 />
         </LinearLayout>
 
@@ -106,14 +111,12 @@
                 android:background="@drawable/not_select_background"
                 android:text="全文检索"
                 android:textSize="@dimen/qb_px_20"
-                android:textColor="@color/colorBlueDark"
-                />
+                android:textColor="@color/colorBlueDark" />
         </LinearLayout>
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -124,7 +127,7 @@
 
 
                 <TableLayout
-                    android:id="@+id/table"
+                    android:id="@+id/select_table"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
 
@@ -134,8 +137,5 @@
                 </TableLayout>
             </LinearLayout>
         </ScrollView>
-
     </LinearLayout>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
