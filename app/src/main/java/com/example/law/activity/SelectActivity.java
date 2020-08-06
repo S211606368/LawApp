@@ -31,7 +31,7 @@ import java.util.List;
 /**
  * @author 林书浩
  * @date 2020/08/05
- * @lastDate 2020/08/05
+ * @lastDate 2020/08/06
  */
 public class SelectActivity extends AppCompatActivity {
     TextView titleSelectTextView;
@@ -88,7 +88,7 @@ public class SelectActivity extends AppCompatActivity {
 
         if (isTitleSelect) {
             showLawTable("");
-        } else {
+        }else {
             showRegulationTable("");
         }
     }
@@ -198,6 +198,9 @@ public class SelectActivity extends AppCompatActivity {
     public void showRegulationTable(String selectContent) {
         selectTableLayout.removeAllViews();
         selectTableLayout.setStretchAllColumns(true);
+
+        if (!"".equals(selectContent)){
+
         List<Chapter> chaptersList;
         if (lawId == -1) {
             chaptersList = chapterDaoImpl.selectChapter();
@@ -209,18 +212,15 @@ public class SelectActivity extends AppCompatActivity {
         for (Chapter chapter : chaptersList) {
             String lawName = lawDaoImpl.selectLaw(chapter.getLawId()).get(0).getLawName();
             List<Regulation> regulationsList;
-            regulationsList = regulationDaoImpl.selectRegulation(chapter.getChapterId());
+            regulationsList = regulationDaoImpl.selectRegulation(chapter.getChapterId(),selectContent);
 
             for (Regulation regulation : regulationsList) {
-                String regulationName = regulation.getRegulationName() + " " + regulation.getRegulationContent();
-                if (regulationName.contains(selectContent)) {
-                    int regulationTextSize = getResources().getDimensionPixelSize(R.dimen.qb_px_15);
 
-                    TableRow regulationTableRow = createTableRow(regulation, regulationTextSize, lawName, chapter.getLawId());
+                    TableRow regulationTableRow = createTableRow(regulation, lawName, chapter.getLawId());
 
                     selectTableLayout.addView(regulationTableRow);
-                }
             }
+        }
         }
     }
 
@@ -228,14 +228,16 @@ public class SelectActivity extends AppCompatActivity {
      * 创建行
      *
      * @param regulation 条例对象
-     * @param textSide   该行字体大小
+     * @param lawName 所属法律名字
+     * @param lawId 所属法律id
+     * @return 表格的行
      */
-    private TableRow createTableRow(Regulation regulation, int textSide, String lawName, int lawId) {
+    private TableRow createTableRow(Regulation regulation, String lawName, int lawId) {
         TableRow tableRow = new TableRow(SelectActivity.this);
         TextView textView = new TextView(SelectActivity.this);
         String regulationTextContent = regulation.getRegulationName() + " " + regulation.getRegulationContent();
         textView.setText(regulationTextContent);
-        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSide);
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.qb_px_15));
 
         tableRow.addView(textView);
 
@@ -329,15 +331,18 @@ public class SelectActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if (isTitleSelect) {
-                    showLawTable(editText.getText().toString());
-                } else {
-                    showRegulationTable(editText.getText().toString());
-                }
                 if ("".equals(editText.getText().toString())) {
                     imageView.setVisibility(View.INVISIBLE);
                 } else {
                     imageView.setVisibility(View.VISIBLE);
+                }
+
+                if (isTitleSelect) {
+                    showLawTable(editText.getText().toString());
+                } else {
+
+                        showRegulationTable(editText.getText().toString());
+
                 }
             }
         };

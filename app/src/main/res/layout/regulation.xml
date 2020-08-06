@@ -30,7 +30,7 @@
                     android:layout_height="@dimen/qb_px_40"
                     android:layout_marginStart="@dimen/qb_px_5"
                     android:layout_gravity="center"
-                    android:background="@drawable/go_back" />
+                    android:background="@drawable/click_go_back" />
 
                 <TextView
                     android:id="@+id/law_name"
@@ -55,7 +55,7 @@
                     android:layout_gravity="center"
                     android:layout_marginEnd="@dimen/qb_px_15"
                     android:gravity="center"
-                    android:background="@drawable/chapter_list"/>
+                    android:background="@drawable/click_chapter_list"/>
             </TableRow>
         </TableLayout>
 

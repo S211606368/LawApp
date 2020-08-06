@@ -52,4 +52,19 @@ public class RegulationDaoImpl implements RegulationDao {
         }
         return regulationList;
     }
+
+    @Override
+    public List<Regulation> selectRegulation(int chapterId,String selectContent) {
+        List<Regulation> regulationList = new ArrayList<>();
+
+        String row = "regulation_id,chapter_id,regulation_name,regulation_content";
+        String table = "REGULATIONS where chapter_id = " + chapterId + " and regulation_content like '%" + selectContent+"%'";
+        List<String[]> stringList = sqlStatementFunction.selectView(row, table);
+        for (String[] str : stringList) {
+            Regulation regulation = new Regulation(Integer.parseInt(str[0]), Integer.parseInt(str[1]), str[2], str[3]);
+            regulation.setChapterId(chapterId);
+            regulationList.add(regulation);
+        }
+        return regulationList;
+    }
 }

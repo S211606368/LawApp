@@ -47,7 +47,6 @@ public class SqlStatementFunction {
 
         String[] rows = row.split("[,]");
         String sql = "select " + row + " from " + table;
-
         try {
             cursor = sqLiteDatabase.rawQuery(sql, null);
             if (cursor.moveToFirst()) {

@@ -68,7 +68,7 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
      * @throws IOException
      */
     public void copyDatabase() throws IOException {
-        InputStream inputStream = context.getResources().openRawResource(R.raw.low);
+        InputStream inputStream = context.getResources().openRawResource(R.raw.law);
 
         String outFileName = dataBasePath + "/" + DATABASE_NAME;
         OutputStream outputStream = new FileOutputStream(outFileName);

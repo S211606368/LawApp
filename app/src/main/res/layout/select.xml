@@ -65,8 +65,7 @@
                 android:layout_gravity="center"
                 android:text="取消"
                 android:textSize="@dimen/qb_px_15"
-                android:textColor="@color/colorTopBackground"
-                android:background="@drawable/go_back" />
+                android:textColor="@color/colorTopBackground" />
         </LinearLayout>
 
         <LinearLayout

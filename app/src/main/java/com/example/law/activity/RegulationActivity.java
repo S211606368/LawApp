@@ -1,19 +1,16 @@
 package com.example.law.activity;
 
-import android.content.Context;
+
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.Layout;
-import android.text.TextWatcher;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.ScrollView;
@@ -22,7 +19,6 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import com.example.law.R;
 import com.example.law.dao.impl.ChapterDaoImpl;
@@ -30,6 +26,7 @@ import com.example.law.dao.impl.RegulationDaoImpl;
 import com.example.law.pojo.Chapter;
 import com.example.law.pojo.Regulation;
 import com.example.law.service.function.LayoutFunction;
+import com.example.law.service.function.TableFunction;
 import com.example.law.service.sqlite.DatabaseOpenHelper;
 
 import java.util.List;
@@ -39,7 +36,7 @@ import java.util.List;
  *
  * @author 林书浩
  * @date 2020/07/31
- * @lastDate 2020/08/05
+ * @lastDate 2020/08/06
  */
 public class RegulationActivity extends AppCompatActivity {
 
@@ -52,12 +49,13 @@ public class RegulationActivity extends AppCompatActivity {
     TableLayout regulationTableLayout;
 
     TableLayout indexTableLayout;
-    TableLayout selectTableLayout;
 
     Button goBackImageView;
     Button indexTextView;
 
     LinearLayout fullTextSelectLinearLayout;
+
+    TableFunction tableFunction;
 
     /**
      * 所属法律编码
@@ -73,13 +71,13 @@ public class RegulationActivity extends AppCompatActivity {
 
     ScrollView scrollView;
 
-    PopupWindow indexWindow;
+    PopupWindow indexPopupWindow;
 
-    PopupWindow selectWindow;
+    PopupWindow optionPopupWindow;
+
+    PopupWindow selectPopupWindow;
 
     LayoutFunction layoutFunction;
-
-    SelectActivity selectActivity;
 
 
     @Override
@@ -87,7 +85,8 @@ public class RegulationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.regulation);
 
-        selectActivity = new SelectActivity();
+        tableFunction = new TableFunction(RegulationActivity.this);
+        layoutFunction = new LayoutFunction(RegulationActivity.this);
 
         DatabaseOpenHelper.getInstance(RegulationActivity.this);
         chapterDaoImpl = new ChapterDaoImpl();
@@ -134,7 +133,7 @@ public class RegulationActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View view) {
-            indexWindow.showAtLocation(view, Gravity.RIGHT, 0, 0);
+            indexPopupWindow.showAtLocation(view, Gravity.RIGHT, 0, 0);
         }
     }
 
@@ -144,8 +143,8 @@ public class RegulationActivity extends AppCompatActivity {
     public void loadIndexWindow() {
         final View indexWindowView = getLayoutInflater().inflate(R.layout.index, null, false);
 
-        indexWindow = new PopupWindow(indexWindowView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
-        indexWindow.setAnimationStyle(R.style.AnimationRightFade);
+        indexPopupWindow = new PopupWindow(indexWindowView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
+        indexPopupWindow.setAnimationStyle(R.style.AnimationRightFade);
 
         indexWindowView.setBackground(this.getDrawable(R.drawable.index_frame));
 
@@ -153,7 +152,7 @@ public class RegulationActivity extends AppCompatActivity {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if (indexWindowView.isShown()) {
-                    indexWindow.dismiss();
+                    indexPopupWindow.dismiss();
                 }
                 return false;
             }
@@ -179,7 +178,7 @@ public class RegulationActivity extends AppCompatActivity {
 
         LinearLayout indexLinearLayout = createTableRow(chapters, chapterTextSize);
         indexLinearLayout.setBackground(this.getDrawable(R.drawable.white_change_gray));
-        indexLinearLayout.setOnClickListener(new ChapterOnClick(chapterTableRow, regulationTableLayout, indexWindow));
+        indexLinearLayout.setOnClickListener(new ChapterOnClick(chapterTableRow, regulationTableLayout, indexPopupWindow));
         indexTableLayout.addView(indexLinearLayout);
 
     }
@@ -242,9 +241,9 @@ public class RegulationActivity extends AppCompatActivity {
 
         tableRow.addView(textView);
 
-        tableRow.setBackground(this.getDrawable(R.drawable.white_change_gray));
+        tableRow.setBackground(this.getDrawable(R.drawable.table_row_background_white));
 
-        tableRow.setOnClickListener(new RegulationOnClick(tableRow));
+        tableRow.setOnClickListener(new RegulationOnClick(tableRow,tableFunction,content));
         return tableRow;
 
     }
@@ -252,18 +251,48 @@ public class RegulationActivity extends AppCompatActivity {
     /**
      * 条例的点击效果
      */
-    private class RegulationOnClick implements View.OnClickListener {
+    private class RegulationOnClick implements View.OnClickListener,View.OnLongClickListener {
         TableRow regulationTableRow;
+        TableFunction tableFunction;
+        String content;
 
-        public RegulationOnClick(TableRow regulationTableRow) {
+        public RegulationOnClick(TableRow regulationTableRow,TableFunction tableFunction,String content) {
             this.regulationTableRow = regulationTableRow;
+            this.tableFunction = tableFunction;
+            this.content = content;
         }
 
         @Override
         public void onClick(View view) {
-            view.setFocusable(true);
-            view.requestFocus();
-            view.requestFocusFromTouch();
+            tableFunction.changeTableRow(regulationTableRow);
+        }
+
+        @Override
+        public boolean onLongClick(View view) {
+
+            /*int[] position = new int[2];
+            regulationTableRow.getLocationInWindow(position);
+            int tableRowTop = position[1] - regulationTableRow.getTop();
+            int tableRowBottom = position[1] + regulationTableRow.getBottom();
+            if (tableRowTop>getResources().getDimensionPixelSize(R.dimen.qb_px_70)){
+
+            }*/
+            /*final View optionWindowView = getLayoutInflater().inflate(R.layout.option, null, false);
+            optionPopupWindow = new PopupWindow(optionWindowView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+            optionWindowView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+                    if (optionWindowView.isShown()) {
+                        optionPopupWindow.dismiss();
+                    }
+                    return false;
+                }
+            });
+            TextView copyTextView;
+            copyTextView = optionWindowView.findViewById(R.id.chapter_table);
+            copyTextView.setOnClickListener(new CopyOnClick(content));
+            optionPopupWindow.showAtLocation(view, Gravity.CENTER_HORIZONTAL, 0, 100);*/
+            return true;
         }
     }
 
@@ -271,26 +300,26 @@ public class RegulationActivity extends AppCompatActivity {
      * 目录的点击效果（输入要跳转到的y轴坐标）
      */
     private class ChapterOnClick implements View.OnClickListener {
-        LinearLayout linearLayout;
+        TableRow tableRow;
         TableLayout tableLayout;
         PopupWindow indexWindow;
 
         /**
-         * @param linearLayout 需要移动到控件位置的控件
+         * @param tableRow 需要移动到控件位置的控件
          * @param tableLayout  该控件的父控件
          * @param indexWindow  弹出的窗口界面
          */
-        public ChapterOnClick(LinearLayout linearLayout, TableLayout tableLayout, PopupWindow indexWindow) {
-            this.linearLayout = linearLayout;
+        public ChapterOnClick(TableRow tableRow, TableLayout tableLayout, PopupWindow indexWindow) {
+            this.tableRow = tableRow;
             this.tableLayout = tableLayout;
             this.indexWindow = indexWindow;
         }
 
         @Override
         public void onClick(View view) {
-            int moveY = linearLayout.getTop() + tableLayout.getTop();
+            int moveY = tableRow.getTop() + tableLayout.getTop();
             scrollView.smoothScrollTo(0, moveY);
-
+            tableFunction.changeTableRow(tableRow);
             indexWindow.dismiss();
         }
     }
@@ -317,6 +346,25 @@ public class RegulationActivity extends AppCompatActivity {
 
             Intent intent = new Intent(RegulationActivity.this, SelectActivity.class);
             startActivity(intent);
+        }
+    }
+    private static ClipboardManager manager;
+    /**
+     * 复制的点击事件
+     */
+    private class CopyOnClick implements View.OnClickListener {
+        String content;
+        TableLayout tableLayout;
+
+        public CopyOnClick(String content){
+            this.content = content;
+        }
+        @Override
+        public void onClick(View view) {
+            ClipData clipData =ClipData.newPlainText("Label", content);
+            //将ClipData数据复制到剪贴板：
+            manager.setPrimaryClip(clipData);
+
         }
     }
 }

@@ -37,6 +37,8 @@ public class LawActivity extends AppCompatActivity {
 
     LinearLayout selectLinearLayout;
 
+    TableRow choiceTableRow;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
