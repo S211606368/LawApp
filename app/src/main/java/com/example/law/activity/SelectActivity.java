@@ -2,7 +2,6 @@ package com.example.law.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -11,8 +10,6 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -27,10 +24,8 @@ import com.example.law.dao.impl.RegulationDaoImpl;
 import com.example.law.pojo.Chapter;
 import com.example.law.pojo.Law;
 import com.example.law.pojo.Regulation;
-import com.example.law.service.function.LayoutFunction;
 import com.wyt.searchedittext.SearchEditText;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -63,6 +58,7 @@ public class SelectActivity extends AppCompatActivity {
      */
     static int lawId = -1;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,7 +75,7 @@ public class SelectActivity extends AppCompatActivity {
         clearSelectImageView = findViewById(R.id.clear_select);
         clearSelectImageView.setOnClickListener(new ClearSelectOnClick());
 
-        watcherText(selectTextSearchEditText,clearSelectImageView);
+        watcherText(selectTextSearchEditText, clearSelectImageView);
 
         goBackTextView = findViewById(R.id.go_back);
         goBackTextView.setOnClickListener(new GoBackOnClick());
@@ -137,14 +133,14 @@ public class SelectActivity extends AppCompatActivity {
 
     public void changeSelectStyle(Context context) {
         if (isTitleSelect) {
-            titleSelectTextView.setBackground(getDrawable(R.drawable.select_background));
+            titleSelectTextView.setBackground(getDrawable(R.drawable.select_left_background));
             titleSelectTextView.setTextColor(ContextCompat.getColor(context, R.color.colorBackgroundWhite));
-            fullTextSelectTextView.setBackground(getDrawable(R.drawable.not_select_background));
-            fullTextSelectTextView.setTextColor(ContextCompat.getColor(context, R.color.colorBlueDark));
+            fullTextSelectTextView.setBackground(getDrawable(R.drawable.not_select_right_background));
+            fullTextSelectTextView.setTextColor(ContextCompat.getColor(context, R.color.colorTopBackground));
         } else {
-            titleSelectTextView.setBackground(getDrawable(R.drawable.not_select_background));
-            titleSelectTextView.setTextColor(ContextCompat.getColor(context, R.color.colorBlueDark));
-            fullTextSelectTextView.setBackground(getDrawable(R.drawable.select_background));
+            titleSelectTextView.setBackground(getDrawable(R.drawable.not_select_left_background));
+            titleSelectTextView.setTextColor(ContextCompat.getColor(context, R.color.colorTopBackground));
+            fullTextSelectTextView.setBackground(getDrawable(R.drawable.select_right_background));
             fullTextSelectTextView.setTextColor(ContextCompat.getColor(context, R.color.colorBackgroundWhite));
         }
     }
@@ -166,7 +162,7 @@ public class SelectActivity extends AppCompatActivity {
     /**
      * 显示法律表格
      */
-    private void showLawTable(String selectContent) {
+    public void showLawTable(String selectContent) {
         selectTableLayout.removeAllViews();
         selectTableLayout.setStretchAllColumns(true);
         List<Law> lawList;
@@ -180,7 +176,7 @@ public class SelectActivity extends AppCompatActivity {
             TextView lawTextView = new TextView(SelectActivity.this);
             lawName = law.getLawName();
 
-            if (lawName.contains(selectContent)){
+            if (lawName.contains(selectContent)) {
                 lawTableRow.setOnClickListener(new LawOnClick(law.getLawId(), law.getLawName()));
 
                 lawTextView.setText(lawName);
@@ -199,7 +195,7 @@ public class SelectActivity extends AppCompatActivity {
     /**
      * 显示条例表格
      */
-    private void showRegulationTable(String selectContent) {
+    public void showRegulationTable(String selectContent) {
         selectTableLayout.removeAllViews();
         selectTableLayout.setStretchAllColumns(true);
         List<Chapter> chaptersList;
@@ -217,10 +213,10 @@ public class SelectActivity extends AppCompatActivity {
 
             for (Regulation regulation : regulationsList) {
                 String regulationName = regulation.getRegulationName() + " " + regulation.getRegulationContent();
-                if (regulationName.contains(selectContent)){
+                if (regulationName.contains(selectContent)) {
                     int regulationTextSize = getResources().getDimensionPixelSize(R.dimen.qb_px_15);
 
-                    TableRow regulationTableRow = createTableRow(regulation, regulationTextSize, lawName,chapter.getLawId());
+                    TableRow regulationTableRow = createTableRow(regulation, regulationTextSize, lawName, chapter.getLawId());
 
                     selectTableLayout.addView(regulationTableRow);
                 }
@@ -234,7 +230,7 @@ public class SelectActivity extends AppCompatActivity {
      * @param regulation 条例对象
      * @param textSide   该行字体大小
      */
-    private TableRow createTableRow(Regulation regulation, int textSide, String lawName,int lawId) {
+    private TableRow createTableRow(Regulation regulation, int textSide, String lawName, int lawId) {
         TableRow tableRow = new TableRow(SelectActivity.this);
         TextView textView = new TextView(SelectActivity.this);
         String regulationTextContent = regulation.getRegulationName() + " " + regulation.getRegulationContent();
@@ -315,6 +311,7 @@ public class SelectActivity extends AppCompatActivity {
 
     /**
      * 文本监听
+     *
      * @param editText
      * @param imageView
      */
@@ -332,9 +329,9 @@ public class SelectActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if (isTitleSelect){
+                if (isTitleSelect) {
                     showLawTable(editText.getText().toString());
-                }else{
+                } else {
                     showRegulationTable(editText.getText().toString());
                 }
                 if ("".equals(editText.getText().toString())) {

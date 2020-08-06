@@ -15,6 +15,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:orientation="vertical">
 
+
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -23,39 +24,38 @@
 
             <TableRow android:background="@color/colorTopBackground">
 
-                <ImageView
+                <Button
                     android:id="@+id/go_back"
-                    android:layout_width="@dimen/qb_px_60"
-                    android:layout_height="@dimen/qb_px_60"
+                    android:layout_width="@dimen/qb_px_40"
+                    android:layout_height="@dimen/qb_px_40"
+                    android:layout_marginStart="@dimen/qb_px_5"
                     android:layout_gravity="center"
                     android:background="@drawable/go_back" />
 
                 <TextView
                     android:id="@+id/law_name"
                     android:layout_width="@dimen/qb_px_240"
-                    android:layout_height="@dimen/qb_px_60"
+                    android:layout_height="@dimen/qb_px_40"
                     android:layout_gravity="center"
                     android:gravity="center"
+                    android:singleLine="true"
                     android:ellipsize="marquee"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
                     android:marqueeRepeatLimit="marquee_forever"
                     android:scrollHorizontally="true"
-                    android:singleLine="true"
                     android:text="交通法规"
                     android:textColor="#FFFFFFFF"
                     android:textSize="@dimen/qb_px_20" />
 
-                <TextView
+                <Button
                     android:id="@+id/index"
-                    android:layout_width="@dimen/qb_px_60"
-                    android:layout_height="@dimen/qb_px_60"
+                    android:layout_width="@dimen/qb_px_40"
+                    android:layout_height="@dimen/qb_px_40"
                     android:layout_gravity="center"
-                    android:layout_marginEnd="@dimen/qb_px_10"
+                    android:layout_marginEnd="@dimen/qb_px_15"
                     android:gravity="center"
-                    android:background="@drawable/chapter_list"
-                    android:textColor="#FFFFFFFF"
-                    android:textSize="@dimen/qb_px_30" />
+                    android:background="@drawable/chapter_list"/>
             </TableRow>
         </TableLayout>
 

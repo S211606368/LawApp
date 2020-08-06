@@ -23,7 +23,6 @@
                 android:layout_width="@dimen/qb_px_315"
                 android:layout_height="@dimen/qb_px_40"
                 android:layout_marginTop="@dimen/qb_px_10"
-                android:layout_marginBottom="@dimen/qb_px_10"
                 android:layout_marginStart="@dimen/qb_px_10"
                 android:background="@drawable/index_background">
 
@@ -47,6 +46,7 @@
                     android:imeOptions="actionNone"
                     android:singleLine="true"
                     android:focusable="true" />
+
                 <ImageView
                     android:id="@+id/clear_select"
                     android:layout_width="@dimen/qb_px_20"
@@ -55,6 +55,7 @@
                     android:background="@drawable/clear_password"
                     android:layout_gravity="center" />
             </LinearLayout>
+
             <TextView
                 android:id="@+id/go_back"
                 android:layout_width="@dimen/qb_px_40"
@@ -64,27 +65,25 @@
                 android:layout_gravity="center"
                 android:text="取消"
                 android:textSize="@dimen/qb_px_15"
-                android:textColor="@color/colorBlueDark"
+                android:textColor="@color/colorTopBackground"
                 android:background="@drawable/go_back" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/qb_px_40"
-            android:layout_marginTop="@dimen/qb_px_5"
-            android:layout_marginBottom="@dimen/qb_px_10"
             android:layout_marginStart="@dimen/qb_px_10"
             android:layout_marginEnd="@dimen/qb_px_10">
 
             <TextView
                 android:id="@+id/title_select"
                 android:layout_width="@dimen/qb_px_150"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/qb_px_10"
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:layout_weight="1"
-                android:background="@drawable/select_background"
+                android:background="@drawable/select_left_background"
                 android:text="标题检索"
                 android:textSize="@dimen/qb_px_20"
                 android:textColor="@color/colorBackgroundWhite" />
@@ -92,22 +91,20 @@
             <TextView
                 android:id="@+id/full_text_select"
                 android:layout_width="@dimen/qb_px_150"
-                android:layout_height="match_parent"
-                android:layout_marginStart="@dimen/qb_px_15"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/qb_px_10"
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:layout_weight="1"
-                android:background="@drawable/not_select_background"
+                android:background="@drawable/not_select_right_background"
                 android:text="全文检索"
                 android:textSize="@dimen/qb_px_20"
-                android:textColor="@color/colorBlueDark" />
+                android:textColor="@color/colorTopBackground" />
         </LinearLayout>
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/qb_px_10"
             android:layout_marginStart="@dimen/qb_px_10"
             android:layout_marginEnd="@dimen/qb_px_10"
             android:layout_marginBottom="@dimen/qb_px_10">

@@ -1,13 +1,18 @@
 package com.example.law.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.Layout;
+import android.text.TextWatcher;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -47,9 +52,10 @@ public class RegulationActivity extends AppCompatActivity {
     TableLayout regulationTableLayout;
 
     TableLayout indexTableLayout;
+    TableLayout selectTableLayout;
 
-    ImageView goBackImageView;
-    TextView indexTextView;
+    Button goBackImageView;
+    Button indexTextView;
 
     LinearLayout fullTextSelectLinearLayout;
 
@@ -69,12 +75,19 @@ public class RegulationActivity extends AppCompatActivity {
 
     PopupWindow indexWindow;
 
+    PopupWindow selectWindow;
+
     LayoutFunction layoutFunction;
+
+    SelectActivity selectActivity;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.regulation);
+
+        selectActivity = new SelectActivity();
 
         DatabaseOpenHelper.getInstance(RegulationActivity.this);
         chapterDaoImpl = new ChapterDaoImpl();
@@ -82,6 +95,7 @@ public class RegulationActivity extends AppCompatActivity {
 
         lawNameTextView = findViewById(R.id.law_name);
         lawNameTextView.setText(lawName);
+        lawNameTextView.setSelected(true);
 
         fullTextSelectLinearLayout = findViewById(R.id.full_text_select);
         fullTextSelectLinearLayout.setOnClickListener(new FullTextSelectOnClick());
@@ -108,7 +122,7 @@ public class RegulationActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View view) {
-            SelectActivity.setIsTitleSelect(true,-1);
+            SelectActivity.setIsTitleSelect(true, -1);
             RegulationActivity.this.finish();
         }
     }
@@ -159,8 +173,8 @@ public class RegulationActivity extends AppCompatActivity {
      */
     private void showIndexList(String chapters, int chapterTextSize, TableRow chapterTableRow) {
         int length = 13;
-        if (chapters.length() > length){
-            chapters = chapters.substring(0,length) + "…";
+        if (chapters.length() > length) {
+            chapters = chapters.substring(0, length) + "…";
         }
 
         LinearLayout indexLinearLayout = createTableRow(chapters, chapterTextSize);
@@ -275,7 +289,7 @@ public class RegulationActivity extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             int moveY = linearLayout.getTop() + tableLayout.getTop();
-            scrollView.scrollTo(0, moveY);
+            scrollView.smoothScrollTo(0, moveY);
 
             indexWindow.dismiss();
         }
@@ -292,10 +306,15 @@ public class RegulationActivity extends AppCompatActivity {
         RegulationActivity.lawName = lawName;
     }
 
+    /**
+     * 搜索的点击事件
+     */
     private class FullTextSelectOnClick implements View.OnClickListener {
         @Override
         public void onClick(View view) {
+
             SelectActivity.setIsTitleSelect(false, lawId);
+
             Intent intent = new Intent(RegulationActivity.this, SelectActivity.class);
             startActivity(intent);
         }
