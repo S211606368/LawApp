@@ -2,7 +2,6 @@ package com.example.law.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -43,9 +42,6 @@ public class LawActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.law);
 
-        SettingActivity.setTextSize(getResources().getDimensionPixelSize(R.dimen.qb_px_15));
-        SettingActivity.setTitleSize(getResources().getDimensionPixelSize(R.dimen.qb_px_20));
-
         DatabaseOpenHelper.getInstance(LawActivity.this);
         lawDaoImpl = new LawDaoImpl();
 
@@ -58,7 +54,13 @@ public class LawActivity extends AppCompatActivity {
         lawTableLayout = findViewById(R.id.table);
 
         tableFunction = new TableFunction(LawActivity.this);
+
+        SettingActivity.setTextSize(getResources().getDimensionPixelSize(R.dimen.qb_px_15));
+        SettingActivity.setTitleSize(getResources().getDimensionPixelSize(R.dimen.qb_px_20));
+
         showTable();
+
+
     }
 
     /**
@@ -71,22 +73,21 @@ public class LawActivity extends AppCompatActivity {
         lawList = lawDaoImpl.selectLaw();
         String lawName;
 
-        int row = 0;
         for (Law law : lawList) {
             TableRow lawTableRow = new TableRow(LawActivity.this);
 
             TextView lawTextView = new TextView(LawActivity.this);
             lawName = law.getLawName();
+
             lawTextView.setText(lawName);
-            lawTextView.setTextSize(SettingActivity.getTitleSize());
+            lawTextView.setTextSize(SettingActivity.getTextSize());
             lawTextView.setGravity(Gravity.CENTER_VERTICAL);
             lawTextView.setBackground(this.getDrawable(R.drawable.text_view_background));
 
             lawTableRow.setOnClickListener(new LawOnClick(law.getLawId(), law.getLawName(),lawTableRow));
-
-            lawTableRow.addView(lawTextView);
             lawTableRow.setBackground(this.getDrawable(R.drawable.table_row_background_white));
 
+            lawTableRow.addView(lawTextView);
             lawTableLayout.addView(lawTableRow);
         }
     }

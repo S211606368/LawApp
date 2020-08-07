@@ -106,7 +106,7 @@ public class SelectActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View view) {
-            showLawTable("");
+            showLawTable(selectTextSearchEditText.getText().toString());
             SelectActivity.setIsTitleSelect(true);
             changeSelectStyle(context);
         }
@@ -125,7 +125,7 @@ public class SelectActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View view) {
-            showRegulationTable("");
+            showRegulationTable(selectTextSearchEditText.getText().toString());
             SelectActivity.setIsTitleSelect(false);
             changeSelectStyle(context);
         }
@@ -148,7 +148,7 @@ public class SelectActivity extends AppCompatActivity {
     /**
      * 获取当前是标题检索还是全文检索
      *
-     * @param isTitleSelect
+     * @param isTitleSelect 判断是否是标题检索
      */
     public static void setIsTitleSelect(boolean isTitleSelect) {
         SelectActivity.isTitleSelect = isTitleSelect;
@@ -169,7 +169,6 @@ public class SelectActivity extends AppCompatActivity {
         lawList = lawDaoImpl.selectLaw();
         String lawName;
 
-        int row = 0;
         for (Law law : lawList) {
             TableRow lawTableRow = new TableRow(SelectActivity.this);
 
@@ -180,7 +179,8 @@ public class SelectActivity extends AppCompatActivity {
                 lawTableRow.setOnClickListener(new LawOnClick(law.getLawId(), law.getLawName()));
 
                 lawTextView.setText(lawName);
-                lawTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX,SettingActivity.getTextSize());
+               /* keyWordChangeColor(selectContent,lawName,lawTextView);*/
+                lawTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX,SettingActivity.getTitleSize());
                 lawTextView.setGravity(Gravity.CENTER_VERTICAL);
 
                 lawTableRow.addView(lawTextView);
@@ -314,8 +314,8 @@ public class SelectActivity extends AppCompatActivity {
     /**
      * 文本监听
      *
-     * @param editText
-     * @param imageView
+     * @param editText 文本框
+     * @param imageView 清除按钮
      */
     public void watcherText(final EditText editText, final ImageView imageView) {
         TextWatcher textWatcher = new TextWatcher() {
@@ -348,4 +348,36 @@ public class SelectActivity extends AppCompatActivity {
         };
         editText.addTextChangedListener(textWatcher);
     }
+
+    /*public void keyWordChangeColor(String content,String keyWord,TextView textView){
+        List<Integer> keyWordList = new ArrayList<>();
+
+        int keyWordLength = keyWord.length();
+        String temp = content;
+        int keyWordAfterLength = 0;
+        int start = -1;
+
+        do {
+            start = temp.indexOf(keyWord);
+
+            if (start != -1) {
+                start = start + keyWordAfterLength;
+                keyWordList.add(start);
+                keyWordAfterLength = start + keyWordAfterLength;
+                temp = content.substring(keyWordAfterLength);
+            }
+        } while (start != -1);
+
+        SpannableStringBuilder styledKeyWord = new SpannableStringBuilder(content);
+        for (Integer i : keyWordList) {
+            styledKeyWord.setSpan(
+
+                    new ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorOrange)),
+                    i,
+                    i + keyWordAfterLength,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+        textView.setText(styledKeyWord);
+
+    }*/
 }

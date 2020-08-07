@@ -1,10 +1,8 @@
 package com.example.law.activity;
 
-
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -28,7 +26,9 @@ import com.example.law.pojo.Regulation;
 import com.example.law.service.function.LayoutFunction;
 import com.example.law.service.function.TableFunction;
 import com.example.law.service.sqlite.DatabaseOpenHelper;
+import com.example.law.view.RollTextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -75,6 +75,9 @@ public class RegulationActivity extends AppCompatActivity {
 
     LayoutFunction layoutFunction;
 
+    static List<TableRow> indexTableRowList = new ArrayList<>();
+    static long indexId = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,11 +119,12 @@ public class RegulationActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View view) {
+            RegulationActivity.setIndexId(0);
+            RegulationActivity.setIndexTableRowList(new ArrayList<TableRow>());
             SelectActivity.setIsTitleSelect(true, -1);
             RegulationActivity.this.finish();
         }
     }
-
     /**
      * 索引页面
      */
@@ -128,8 +132,9 @@ public class RegulationActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View view) {
-            lawNameTextView.setSelected(true);
-            indexPopupWindow.showAtLocation(view, Gravity.RIGHT, 0, 0);
+            indexPopupWindow.showAtLocation(view, Gravity.END, 0, 0);
+            changeIndexTableRowColor(R.drawable.white_background);
+            changeIndexTableRowColor(R.drawable.blue_background);
         }
     }
 
@@ -144,11 +149,13 @@ public class RegulationActivity extends AppCompatActivity {
 
         indexWindowView.setBackground(this.getDrawable(R.drawable.index_frame));
 
+
         indexWindowView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if (indexWindowView.isShown()) {
                     indexPopupWindow.dismiss();
+                    view.performClick();
                 }
                 return false;
             }
@@ -166,16 +173,35 @@ public class RegulationActivity extends AppCompatActivity {
      * @param chapterTextSize 字体大小
      * @param chapterTableRow 获取该章节所在的位置
      */
-    private void showIndexList(String chapters, int chapterTextSize, TableRow chapterTableRow) {
-        int length = 13;
+    private void showIndexList(String chapters, int chapterTextSize, TableRow chapterTableRow,long chapterId) {
+        /*int length = 13;
         if (chapters.length() > length) {
             chapters = chapters.substring(0, length) + "…";
-        }
+        }*/
+        TableRow indexTableRow = new TableRow(RegulationActivity.this);
+        RollTextView indexRollTextView = new RollTextView(RegulationActivity.this);
 
-        LinearLayout indexLinearLayout = createTableRow(chapters, chapterTextSize);
-        indexLinearLayout.setBackground(this.getDrawable(R.drawable.white_background));
-        indexLinearLayout.setOnClickListener(new ChapterOnClick(chapterTableRow, regulationTableLayout, indexPopupWindow));
-        indexTableLayout.addView(indexLinearLayout);
+        indexRollTextView.setText(chapters);
+        indexRollTextView.setWidth(getResources().getDimensionPixelSize(R.dimen.qb_px_250));
+        indexRollTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, chapterTextSize);
+        indexRollTextView.setBackground(this.getDrawable(R.drawable.text_view_background));
+
+        indexRollTextView.setSingleLine(true);
+        indexRollTextView.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+        indexRollTextView.setFocusable(true);
+        indexRollTextView.setFocusableInTouchMode(true);
+        indexRollTextView.setSelected(true);
+        indexRollTextView.setMarqueeRepeatLimit(-1);
+
+        indexTableRow.addView(indexRollTextView);
+
+        RegulationActivity.getIndexTableRowList().add(indexTableRow);
+
+        indexTableRow.setBackground(this.getDrawable(R.drawable.white_change_gray));
+
+        indexTableRow.setBackground(this.getDrawable(R.drawable.white_background));
+        indexTableRow.setOnClickListener(new ChapterOnClick(chapterTableRow, regulationTableLayout, indexPopupWindow,tableFunction,chapterId));
+        indexTableLayout.addView(indexTableRow);
 
     }
 
@@ -196,13 +222,14 @@ public class RegulationActivity extends AppCompatActivity {
 
             chapterTextSize = SettingActivity.getTitleSize();
             chapters = chapter.getChapterName() + "  " + chapter.getChapterContent();
+            long chapterId = chapter.getChapterId();
 
-            TableRow chapterTableRow = createTableRow(chapters, chapterTextSize);
+            TableRow chapterTableRow = createTableRow(chapters, chapterTextSize,chapterId);
 
             regulationTableLayout.addView(chapterTableRow);
 
 
-            showIndexList(chapters, chapterTextSize, chapterTableRow);
+            showIndexList(chapters, chapterTextSize, chapterTableRow,chapterId);
 
 
             List<Regulation> regulationsList;
@@ -215,7 +242,7 @@ public class RegulationActivity extends AppCompatActivity {
                 regulations = regulation.getRegulationName() + "  " + regulation.getRegulationContent();
                 int regulationTextSize = SettingActivity.getTextSize();
 
-                TableRow regulationTableRow = createTableRow(regulations, regulationTextSize);
+                TableRow regulationTableRow = createTableRow(regulations, regulationTextSize,chapterId);
 
                 regulationTableLayout.addView(regulationTableRow);
             }
@@ -228,7 +255,7 @@ public class RegulationActivity extends AppCompatActivity {
      * @param content  输入该行要显示的内容
      * @param textSide 该行字体大小
      */
-    private TableRow createTableRow(String content, int textSide) {
+    private TableRow createTableRow(String content, int textSide,long chapterId) {
         TableRow tableRow = new TableRow(RegulationActivity.this);
         TextView textView = new TextView(RegulationActivity.this);
 
@@ -240,7 +267,7 @@ public class RegulationActivity extends AppCompatActivity {
 
         tableRow.setBackground(this.getDrawable(R.drawable.table_row_background_white));
 
-        tableRow.setOnClickListener(new RegulationOnClick(tableRow, tableFunction, content));
+        tableRow.setOnClickListener(new RegulationOnClick(tableRow, tableFunction, content,chapterId));
         return tableRow;
 
     }
@@ -252,16 +279,22 @@ public class RegulationActivity extends AppCompatActivity {
         TableRow regulationTableRow;
         TableFunction tableFunction;
         String content;
+        long chapterId;
 
-        public RegulationOnClick(TableRow regulationTableRow, TableFunction tableFunction, String content) {
+        public RegulationOnClick(TableRow regulationTableRow, TableFunction tableFunction, String content ,long chapterId) {
             this.regulationTableRow = regulationTableRow;
             this.tableFunction = tableFunction;
             this.content = content;
+            this.chapterId = chapterId;
         }
 
         @Override
         public void onClick(View view) {
             tableFunction.changeTableRow(regulationTableRow);
+
+            changeIndexTableRowColor(R.drawable.white_background);
+
+            RegulationActivity.setIndexId(chapterId-1);
         }
 
         @Override
@@ -300,25 +333,46 @@ public class RegulationActivity extends AppCompatActivity {
         TableRow tableRow;
         TableLayout tableLayout;
         PopupWindow indexWindow;
+        TableFunction tableFunction;
+        Long chapterId;
+
+
 
         /**
          * @param tableRow    需要移动到控件位置的控件
          * @param tableLayout 该控件的父控件
          * @param indexWindow 弹出的窗口界面
          */
-        public ChapterOnClick(TableRow tableRow, TableLayout tableLayout, PopupWindow indexWindow) {
+        public ChapterOnClick(TableRow tableRow, TableLayout tableLayout, PopupWindow indexWindow,TableFunction tableFunction,long chapterId) {
             this.tableRow = tableRow;
             this.tableLayout = tableLayout;
             this.indexWindow = indexWindow;
+            this.tableFunction = tableFunction;
+            this.chapterId = chapterId;
         }
 
         @Override
         public void onClick(View view) {
             int moveY = tableRow.getTop() + tableLayout.getTop();
+
+            changeIndexTableRowColor(R.drawable.white_background);
+
+            RegulationActivity.setIndexId(chapterId-1);
             scrollView.smoothScrollTo(0, moveY);
             tableFunction.changeTableRow(tableRow);
             indexWindow.dismiss();
         }
+    }
+
+    public void changeIndexTableRowColor(int background){
+        List<TableRow> indexTableRowList;
+        TableRow indexTableRow;
+        int indexId;
+
+        indexTableRowList = RegulationActivity.getIndexTableRowList();
+        indexId = (int) RegulationActivity.getIndexId();
+        indexTableRow = indexTableRowList.get(indexId);
+        indexTableRow.setBackground(RegulationActivity.this.getDrawable(background));
     }
 
     /**
@@ -346,12 +400,28 @@ public class RegulationActivity extends AppCompatActivity {
         }
     }
 
-    private static ClipboardManager manager;
+    public static List<TableRow> getIndexTableRowList() {
+        return indexTableRowList;
+    }
 
-    /**
+    public static void setIndexTableRowList(List<TableRow> indexTableRowList) {
+        RegulationActivity.indexTableRowList = indexTableRowList;
+    }
+
+    public static long getIndexId() {
+        return indexId;
+    }
+
+    public static void setIndexId(long indexId) {
+        RegulationActivity.indexId = indexId;
+    }
+
+    /*private static ClipboardManager manager;*/
+
+    /*
      * 复制的点击事件
      */
-    private class CopyOnClick implements View.OnClickListener {
+    /*private class CopyOnClick implements View.OnClickListener {
         String content;
         TableLayout tableLayout;
 
@@ -366,5 +436,5 @@ public class RegulationActivity extends AppCompatActivity {
             manager.setPrimaryClip(clipData);
 
         }
-    }
+    }*/
 }

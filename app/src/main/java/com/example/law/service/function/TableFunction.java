@@ -23,7 +23,7 @@ public class TableFunction {
 
     public void changeTableRow(TableRow tableRow) {
         if (null != choiceTableRow && choiceTableRow != tableRow) {
-            choiceTableRow.setBackground(activity.getDrawable(R.drawable.table_row_background_white));
+            choiceTableRow.setBackground(activity.getDrawable(R.drawable.white_change_gray));
         }
         tableRow.setBackground(activity.getDrawable(R.drawable.table_row_background_gray));
         choiceTableRow = tableRow;
