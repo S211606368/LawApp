@@ -78,7 +78,7 @@ public class LawActivity extends AppCompatActivity {
             TextView lawTextView = new TextView(LawActivity.this);
             lawName = law.getLawName();
             lawTextView.setText(lawName);
-            lawTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, SettingActivity.getTitleSize());
+            lawTextView.setTextSize(SettingActivity.getTitleSize());
             lawTextView.setGravity(Gravity.CENTER_VERTICAL);
             lawTextView.setBackground(this.getDrawable(R.drawable.text_view_background));
 
