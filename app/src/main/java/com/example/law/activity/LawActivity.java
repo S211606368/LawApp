@@ -1,13 +1,11 @@
 package com.example.law.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -80,7 +78,7 @@ public class LawActivity extends AppCompatActivity {
             TextView lawTextView = new TextView(LawActivity.this);
             lawName = law.getLawName();
             lawTextView.setText(lawName);
-            lawTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, SettingActivity.getTextSize());
+            lawTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, SettingActivity.getTitleSize());
             lawTextView.setGravity(Gravity.CENTER_VERTICAL);
             lawTextView.setBackground(this.getDrawable(R.drawable.text_view_background));
 

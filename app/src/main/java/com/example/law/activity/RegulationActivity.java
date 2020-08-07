@@ -173,6 +173,7 @@ public class RegulationActivity extends AppCompatActivity {
         }
 
         LinearLayout indexLinearLayout = createTableRow(chapters, chapterTextSize);
+        chapterTableRow.setBackground(this.getDrawable(R.drawable.white_change_gray));
         indexLinearLayout.setBackground(this.getDrawable(R.drawable.table_row_background_gray));
         indexLinearLayout.setOnClickListener(new ChapterOnClick(chapterTableRow, regulationTableLayout, indexPopupWindow));
         indexTableLayout.addView(indexLinearLayout);
@@ -194,7 +195,7 @@ public class RegulationActivity extends AppCompatActivity {
             int chapterTextSize;
             String chapters;
 
-            chapterTextSize = SettingActivity.getTextSize();
+            chapterTextSize = SettingActivity.getTitleSize();
             chapters = chapter.getChapterName() + "  " + chapter.getChapterContent();
 
             TableRow chapterTableRow = createTableRow(chapters, chapterTextSize);
