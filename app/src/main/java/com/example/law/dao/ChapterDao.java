@@ -9,7 +9,7 @@ import java.util.List;
  *
  * @author 林书浩
  * @date 2020/07/31
- * @lastDate 2020/08/05
+ * @lastDate 2020/08/07
  */
 public interface ChapterDao {
 
@@ -26,5 +26,5 @@ public interface ChapterDao {
      * @param lawId 所属法律的id
      * @return 返回章节集合（目录）
      */
-    public List<Chapter> selectChapter(int lawId);
+    public List<Chapter> selectChapter(long lawId);
 }

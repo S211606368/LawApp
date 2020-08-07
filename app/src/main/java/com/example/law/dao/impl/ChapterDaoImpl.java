@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author 林书浩
  * @date 2020/07/31
- * @lastDate 2020/08/05
+ * @lastDate 2020/08/07
  */
 public class ChapterDaoImpl implements ChapterDao {
 
@@ -38,7 +38,7 @@ public class ChapterDaoImpl implements ChapterDao {
     }
 
     @Override
-    public List<Chapter> selectChapter(int lawId) {
+    public List<Chapter> selectChapter(long lawId) {
         List<Chapter> chapterList = new ArrayList<>();
         String row = "chapter_id,chapter_name,chapter_content";
         String table = "CHAPTERS where law_id = " + lawId;

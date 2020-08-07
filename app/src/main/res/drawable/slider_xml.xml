@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:drawable="@drawable/slider"
+        >
+        <shape>
+            <padding
+                android:top="@dimen/qb_px_8"
+                android:bottom="@dimen/qb_px_8" />
+        </shape>
+    </item>
+
+</layer-list>

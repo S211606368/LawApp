@@ -32,7 +32,7 @@
                     android:layout_gravity="center"
                     android:background="@drawable/click_go_back" />
 
-                <TextView
+                <com.example.law.view.RollTextView
                     android:id="@+id/law_name"
                     android:layout_width="@dimen/qb_px_240"
                     android:layout_height="@dimen/qb_px_40"
@@ -55,7 +55,7 @@
                     android:layout_gravity="center"
                     android:layout_marginEnd="@dimen/qb_px_15"
                     android:gravity="center"
-                    android:background="@drawable/click_chapter_list"/>
+                    android:background="@drawable/click_chapter_list" />
             </TableRow>
         </TableLayout>
 
@@ -74,7 +74,7 @@
                 android:layout_height="@dimen/qb_px_30"
                 android:layout_marginStart="@dimen/qb_px_10"
                 android:layout_gravity="center"
-                android:background="@drawable/select" />
+                android:background="@drawable/click_select" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -93,8 +93,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/qb_px_10"
-                android:layout_marginEnd="@dimen/qb_px_10"
+                android:layout_marginStart="-1dp"
+                android:layout_marginEnd="-1dp"
                 android:orientation="vertical">
 
                 <TableLayout
@@ -104,9 +104,6 @@
                     android:stretchColumns="*"
                     android:shrinkColumns="*">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
 
                 </TableLayout>
 

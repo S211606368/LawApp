@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author 林书浩
  * @date 2020/07/29
- * @lastDate 2020/08/05
+ * @lastDate 2020/08/07
  */
 public class LawDaoImpl implements LawDao {
 
@@ -39,7 +39,7 @@ public class LawDaoImpl implements LawDao {
     }
 
     @Override
-    public List<Law> selectLaw(int lawId) {
+    public List<Law> selectLaw(long lawId) {
         List<Law> lawList = new ArrayList<>();
         String row = "law_id,law_name";
         String table = "LAWS where law_id = " + lawId;

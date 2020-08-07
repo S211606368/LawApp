@@ -1,15 +1,22 @@
 package com.example.law.pojo;
 
+import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.NotNull;
+
 /**
  * @author 林书浩
  * @date 2020/07/31
- * @lastDate 2020/08/03
+ * @lastDate 2020/08/07
  */
 public class Regulation {
-    private int regulationId;
-    private int chapterId;
-    private int lawId;
+    @Id(autoincrement = true)
+    private long regulationId;
+    @NotNull
+    private long chapterId;
+    private long lawId;
+    @NotNull
     private String regulationName;
+    @NotNull
     private String regulationContent;
 
     /**
@@ -18,34 +25,34 @@ public class Regulation {
      * @param regulationName    条例名字
      * @param regulationContent 条例内容
      */
-    public Regulation(int regulationId, int chapterId, String regulationName, String regulationContent) {
+    public Regulation(long regulationId, long chapterId, String regulationName, String regulationContent) {
         this.regulationId = regulationId;
         this.chapterId = chapterId;
         this.regulationName = regulationName;
         this.regulationContent = regulationContent;
     }
 
-    public int getRegulationId() {
+    public long getRegulationId() {
         return regulationId;
     }
 
-    public void setRegulationId(int regulationId) {
+    public void setRegulationId(long regulationId) {
         this.regulationId = regulationId;
     }
 
-    public int getChapterId() {
+    public long getChapterId() {
         return chapterId;
     }
 
-    public void setChapterId(int chapterId) {
+    public void setChapterId(long chapterId) {
         this.chapterId = chapterId;
     }
 
-    public int getLawId() {
+    public long getLawId() {
         return lawId;
     }
 
-    public void setLawId(int lawId) {
+    public void setLawId(long lawId) {
         this.lawId = lawId;
     }
 

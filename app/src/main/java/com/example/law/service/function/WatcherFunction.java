@@ -8,6 +8,13 @@ import android.widget.ImageView;
 
 import com.example.law.activity.SelectActivity;
 
+/**
+ * 监听事件工具类
+ *
+ * @author 林书浩
+ * @date 2020/08/06
+ * @lestDate 2020/08/07
+ */
 public class WatcherFunction {
     SelectActivity selectActivity = new SelectActivity();
 

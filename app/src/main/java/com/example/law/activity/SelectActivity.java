@@ -31,7 +31,7 @@ import java.util.List;
 /**
  * @author 林书浩
  * @date 2020/08/05
- * @lastDate 2020/08/06
+ * @lastDate 2020/08/07
  */
 public class SelectActivity extends AppCompatActivity {
     TextView titleSelectTextView;
@@ -56,7 +56,7 @@ public class SelectActivity extends AppCompatActivity {
     /**
      * 全文搜索的法律id，如果为-1则代表所有法律条文搜索
      */
-    static int lawId = -1;
+    static long lawId = -1;
 
 
     @Override
@@ -88,7 +88,7 @@ public class SelectActivity extends AppCompatActivity {
 
         if (isTitleSelect) {
             showLawTable("");
-        }else {
+        } else {
             showRegulationTable("");
         }
     }
@@ -154,7 +154,7 @@ public class SelectActivity extends AppCompatActivity {
         SelectActivity.isTitleSelect = isTitleSelect;
     }
 
-    public static void setIsTitleSelect(boolean isTitleSelect, int lawId) {
+    public static void setIsTitleSelect(boolean isTitleSelect, long lawId) {
         SelectActivity.isTitleSelect = isTitleSelect;
         SelectActivity.lawId = lawId;
     }
@@ -180,7 +180,7 @@ public class SelectActivity extends AppCompatActivity {
                 lawTableRow.setOnClickListener(new LawOnClick(law.getLawId(), law.getLawName()));
 
                 lawTextView.setText(lawName);
-                lawTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.qb_px_20));
+                lawTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX,SettingActivity.getTextSize());
                 lawTextView.setGravity(Gravity.CENTER_VERTICAL);
 
                 lawTableRow.addView(lawTextView);
@@ -199,28 +199,28 @@ public class SelectActivity extends AppCompatActivity {
         selectTableLayout.removeAllViews();
         selectTableLayout.setStretchAllColumns(true);
 
-        if (!"".equals(selectContent)){
+        if (!"".equals(selectContent)) {
 
-        List<Chapter> chaptersList;
-        if (lawId == -1) {
-            chaptersList = chapterDaoImpl.selectChapter();
-        } else {
-            chaptersList = chapterDaoImpl.selectChapter(lawId);
-        }
+            List<Chapter> chaptersList;
+            if (lawId == -1) {
+                chaptersList = chapterDaoImpl.selectChapter();
+            } else {
+                chaptersList = chapterDaoImpl.selectChapter(lawId);
+            }
 
 
-        for (Chapter chapter : chaptersList) {
-            String lawName = lawDaoImpl.selectLaw(chapter.getLawId()).get(0).getLawName();
-            List<Regulation> regulationsList;
-            regulationsList = regulationDaoImpl.selectRegulation(chapter.getChapterId(),selectContent);
+            for (Chapter chapter : chaptersList) {
+                String lawName = lawDaoImpl.selectLaw(chapter.getLawId()).get(0).getLawName();
+                List<Regulation> regulationsList;
+                regulationsList = regulationDaoImpl.selectRegulation(chapter.getChapterId(), selectContent);
 
-            for (Regulation regulation : regulationsList) {
+                for (Regulation regulation : regulationsList) {
 
                     TableRow regulationTableRow = createTableRow(regulation, lawName, chapter.getLawId());
 
                     selectTableLayout.addView(regulationTableRow);
+                }
             }
-        }
         }
     }
 
@@ -228,16 +228,16 @@ public class SelectActivity extends AppCompatActivity {
      * 创建行
      *
      * @param regulation 条例对象
-     * @param lawName 所属法律名字
-     * @param lawId 所属法律id
+     * @param lawName    所属法律名字
+     * @param lawId      所属法律id
      * @return 表格的行
      */
-    private TableRow createTableRow(Regulation regulation, String lawName, int lawId) {
+    private TableRow createTableRow(Regulation regulation, String lawName, long lawId) {
         TableRow tableRow = new TableRow(SelectActivity.this);
         TextView textView = new TextView(SelectActivity.this);
         String regulationTextContent = regulation.getRegulationName() + " " + regulation.getRegulationContent();
         textView.setText(regulationTextContent);
-        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.qb_px_15));
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, SettingActivity.getTextSize());
 
         tableRow.addView(textView);
 
@@ -271,10 +271,10 @@ public class SelectActivity extends AppCompatActivity {
      * 法律的点击效果
      */
     private class LawOnClick implements View.OnClickListener {
-        int lawId;
+        long lawId;
         String lawName;
 
-        public LawOnClick(int id, String name) {
+        public LawOnClick(long id, String name) {
             super();
             this.lawId = id;
             this.lawName = name;
@@ -293,10 +293,10 @@ public class SelectActivity extends AppCompatActivity {
      * 条例的点击效果
      */
     private class RegulationOnClick implements View.OnClickListener {
-        int lawId;
+        long lawId;
         String lawName;
 
-        public RegulationOnClick(int id, String name) {
+        public RegulationOnClick(long id, String name) {
             super();
             this.lawId = id;
             this.lawName = name;
@@ -341,7 +341,7 @@ public class SelectActivity extends AppCompatActivity {
                     showLawTable(editText.getText().toString());
                 } else {
 
-                        showRegulationTable(editText.getText().toString());
+                    showRegulationTable(editText.getText().toString());
 
                 }
             }

@@ -2,7 +2,6 @@ package com.example.law.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
@@ -23,7 +22,7 @@ import java.util.List;
  *
  * @author 林书浩
  * @date 2020/07/28
- * @lastDate 2020/08/03
+ * @lastDate 2020/08/07
  */
 public class MainActivity extends AppCompatActivity {
     CodeDaoImpl codeDaoImpl;

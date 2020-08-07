@@ -1,14 +1,21 @@
 package com.example.law.pojo;
 
+import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.NotNull;
+
 /**
  * @author 林书浩
  * @date 2020/07/31
- * @lastDate 2020/08/03
+ * @lastDate 2020/08/07
  */
 public class Chapter {
-    private int chapterId;
-    private int lawId;
+    @Id(autoincrement = true)
+    private long chapterId;
+    @NotNull
+    private long lawId;
+    @NotNull
     private String chapterName;
+    @NotNull
     private String chapterContent;
 
     /**
@@ -16,7 +23,7 @@ public class Chapter {
      * @param chapterName    章节名字
      * @param chapterContent 章节内容
      */
-    public Chapter(int chapterId, String chapterName, String chapterContent) {
+    public Chapter(long chapterId, String chapterName, String chapterContent) {
         this.chapterId = chapterId;
         this.chapterName = chapterName;
         this.chapterContent = chapterContent;
@@ -28,26 +35,26 @@ public class Chapter {
      * @param chapterName    章节名字
      * @param chapterContent 章节内容
      */
-    public Chapter(int chapterId, int lawId, String chapterName, String chapterContent) {
+    public Chapter(long chapterId, long lawId, String chapterName, String chapterContent) {
         this.chapterId = chapterId;
         this.lawId = lawId;
         this.chapterName = chapterName;
         this.chapterContent = chapterContent;
     }
 
-    public int getChapterId() {
+    public long getChapterId() {
         return chapterId;
     }
 
-    public void setChapterId(int chapterId) {
+    public void setChapterId(long chapterId) {
         this.chapterId = chapterId;
     }
 
-    public int getLawId() {
+    public long getLawId() {
         return lawId;
     }
 
-    public void setLawId(int lawId) {
+    public void setLawId(long lawId) {
         this.lawId = lawId;
     }
 

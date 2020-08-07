@@ -22,9 +22,9 @@ android {
     }
 }
 
-/*apply plugin: 'com.android.application'
+apply plugin: 'com.android.application'
 //GreenDao插件
-apply plugin: 'org.greenrobot.greendao'*/
+apply plugin: 'org.greenrobot.greendao'
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
@@ -37,7 +37,7 @@ dependencies {
 
     implementation 'com.wenwenwen888:searchedittext:1.0.0'
 
-    /*//GreenDao插件依赖
+    //GreenDao插件依赖
     implementation 'org.greenrobot:greendao:3.2.2'
 
     //生成GreenDao的文件目录
@@ -48,6 +48,6 @@ dependencies {
         targetGenDir 'src/main/java'
         // 设置生成的数据库相关文件的包名，默认为entity所在的包名
         daoPackage 'com.shufeng.greendao.gen'
-    }*/
+    }
 }
 

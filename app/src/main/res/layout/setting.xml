@@ -28,6 +28,7 @@
                     android:layout_height="@dimen/qb_px_40"
                     android:layout_gravity="center"
                     android:background="@drawable/go_back" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/qb_px_60"
@@ -36,18 +37,19 @@
                     android:textSize="@dimen/qb_px_30"
                     android:textColor="#FFFFFFFF"
                     android:layout_gravity="center" />
+
                 <TextView
-                    android:id="@+id/index"
                     android:layout_width="@dimen/qb_px_40"
                     android:layout_height="@dimen/qb_px_40"
                     android:layout_gravity="center"
                     android:layout_marginEnd="@dimen/qb_px_10"
+                    android:shadowColor="@color/colorGray"
                     android:gravity="center"
-                    android:background="@drawable/chapter_list"
                     android:textColor="#FFFFFFFF"
                     android:textSize="@dimen/qb_px_30" />
             </TableRow>
         </TableLayout>
+
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -55,23 +57,50 @@
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/white_change_gray">
+                android:background="@drawable/table_row_background_white">
+
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/qb_px_20"
                     android:layout_marginEnd="@dimen/qb_px_20"
                     android:text="字体大小选择:"
-                    android:textSize="@dimen/qb_px_15"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="@dimen/qb_px_20"
-                    android:layout_marginEnd="@dimen/qb_px_20"
-                    android:text="字体大小选择:"
-                    android:textSize="@dimen/qb_px_15"/>
+                    android:textSize="@dimen/qb_px_20" />
+
+                <SeekBar
+                    android:id="@+id/text_size"
+                    android:layout_width="@dimen/qb_px_200"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/draw_bar_xml"
+                    android:thumb="@drawable/slider_xml"
+                    android:layout_gravity="center_vertical"
+                    android:max="4"
+                    android:progress="1"/>
             </TableRow>
 
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/table_row_background_white">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/qb_px_20"
+                    android:layout_marginEnd="@dimen/qb_px_20"
+                    android:text="字体类型选择:"
+                    android:textSize="@dimen/qb_px_20" />
+
+                <SeekBar
+                    android:id="@+id/text_style"
+                    android:layout_width="@dimen/qb_px_200"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/draw_bar_xml"
+                    android:thumb="@drawable/slider_xml"
+                    android:max="4"
+                    android:progress="0"/>
+            </TableRow>
 
 
         </TableLayout>

@@ -9,7 +9,7 @@ import java.util.List;
  *
  * @author 林书浩
  * @date 2020/07/29
- * @lastDate 2020/08/05
+ * @lastDate 2020/08/07
  */
 public interface LawDao {
     /**
@@ -25,7 +25,7 @@ public interface LawDao {
      * @param lawId 所需要查询的法律id
      * @return 这条法律的信息
      */
-    public List<Law> selectLaw(int lawId);
+    public List<Law> selectLaw(long lawId);
 
 
 }

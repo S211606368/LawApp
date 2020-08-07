@@ -19,6 +19,7 @@
         </activity>
         <activity android:name="com.example.law.activity.RegulationActivity" />
         <activity android:name="com.example.law.activity.SelectActivity" />
+        <activity android:name="com.example.law.activity.SettingActivity" />
     </application>
 
 </manifest>

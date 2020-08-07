@@ -6,8 +6,8 @@
         <shape>
             <solid android:color="@color/colorGray" />
             <stroke
-                android:width="0.5dp"
-                android:height="0.5dp"
+                android:width="0.1dp"
+                android:height="0.1dp"
                 android:color="@color/colorGray" />
             <padding
                 android:top="@dimen/qb_px_8"

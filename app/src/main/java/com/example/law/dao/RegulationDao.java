@@ -9,7 +9,7 @@ import java.util.List;
  *
  * @author LIN
  * @date 2020/07/31
- * @lastDate 2020/08/05
+ * @lastDate 2020/08/07
  */
 public interface RegulationDao {
 
@@ -26,14 +26,14 @@ public interface RegulationDao {
      * @param chapterId 传入所属章节的id
      * @return 返回条例集合
      */
-    public List<Regulation> selectRegulation(int chapterId);
+    public List<Regulation> selectRegulation(long chapterId);
 
     /**
      * 查询含有关键字的条例
      *
      * @param chapterId 传入所属章节的id
-     * @param Context 需要查询的关键字
+     * @param Context   需要查询的关键字
      * @return 返回条例集合
      */
-    public List<Regulation> selectRegulation(int chapterId,String Context);
+    public List<Regulation> selectRegulation(long chapterId, String Context);
 }

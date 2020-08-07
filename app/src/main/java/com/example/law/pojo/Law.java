@@ -1,27 +1,36 @@
 package com.example.law.pojo;
 
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.NotNull;
+import org.greenrobot.greendao.annotation.Generated;
+
 /**
  * 法律对象
  *
  * @author 林书浩
  * @date 2020/07/029
- * @lastDate 2020/08/03
+ * @lastDate 2020/08/07
  */
+@Entity
 public class Law {
+
 
     /**
      * 法律id，每个法律对应一个id
      */
-    private int lawId;
+    @Id(autoincrement = true)
+    private long lawId;
 
     /**
      * 法典id，指向该法律对应的法典
      */
-    private int codeId;
+    private long codeId;
 
     /**
      * 法律名字，该法律的名字
      */
+    @NotNull
     private String lawName;
 
     /**
@@ -43,12 +52,15 @@ public class Law {
      * @param lawId   法律id（每本法典下的子法）
      * @param lawName 法律名字
      */
-    public Law(int lawId, String lawName) {
+    public Law(long lawId, String lawName) {
         this.lawId = lawId;
         this.lawName = lawName;
     }
 
-    public Law(int lawId, int codeId, String lawName, String publicDate, String implementDate, String lawContent) {
+
+    @Generated(hash = 1586998742)
+    public Law(long lawId, long codeId, @NotNull String lawName, String publicDate,
+               String implementDate, String lawContent) {
         this.lawId = lawId;
         this.codeId = codeId;
         this.lawName = lawName;
@@ -58,19 +70,24 @@ public class Law {
     }
 
 
-    public int getLawId() {
+    @Generated(hash = 553976986)
+    public Law() {
+    }
+
+
+    public long getLawId() {
         return lawId;
     }
 
-    public void setLawId(int lawId) {
+    public void setLawId(long lawId) {
         this.lawId = lawId;
     }
 
-    public int getCodeId() {
+    public long getCodeId() {
         return codeId;
     }
 
-    public void setCodeId(int codeId) {
+    public void setCodeId(long codeId) {
         this.codeId = codeId;
     }
 

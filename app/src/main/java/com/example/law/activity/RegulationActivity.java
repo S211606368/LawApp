@@ -36,7 +36,7 @@ import java.util.List;
  *
  * @author 林书浩
  * @date 2020/07/31
- * @lastDate 2020/08/06
+ * @lastDate 2020/08/07
  */
 public class RegulationActivity extends AppCompatActivity {
 
@@ -60,7 +60,7 @@ public class RegulationActivity extends AppCompatActivity {
     /**
      * 所属法律编码
      */
-    public static int lawId;
+    public static long lawId;
     /**
      * 所属法律名字
      */
@@ -72,10 +72,6 @@ public class RegulationActivity extends AppCompatActivity {
     ScrollView scrollView;
 
     PopupWindow indexPopupWindow;
-
-    PopupWindow optionPopupWindow;
-
-    PopupWindow selectPopupWindow;
 
     LayoutFunction layoutFunction;
 
@@ -94,7 +90,6 @@ public class RegulationActivity extends AppCompatActivity {
 
         lawNameTextView = findViewById(R.id.law_name);
         lawNameTextView.setText(lawName);
-        lawNameTextView.setSelected(true);
 
         fullTextSelectLinearLayout = findViewById(R.id.full_text_select);
         fullTextSelectLinearLayout.setOnClickListener(new FullTextSelectOnClick());
@@ -133,6 +128,7 @@ public class RegulationActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View view) {
+            lawNameTextView.setSelected(true);
             indexPopupWindow.showAtLocation(view, Gravity.RIGHT, 0, 0);
         }
     }
@@ -177,7 +173,7 @@ public class RegulationActivity extends AppCompatActivity {
         }
 
         LinearLayout indexLinearLayout = createTableRow(chapters, chapterTextSize);
-        indexLinearLayout.setBackground(this.getDrawable(R.drawable.white_change_gray));
+        indexLinearLayout.setBackground(this.getDrawable(R.drawable.table_row_background_gray));
         indexLinearLayout.setOnClickListener(new ChapterOnClick(chapterTableRow, regulationTableLayout, indexPopupWindow));
         indexTableLayout.addView(indexLinearLayout);
 
@@ -198,7 +194,7 @@ public class RegulationActivity extends AppCompatActivity {
             int chapterTextSize;
             String chapters;
 
-            chapterTextSize = getResources().getDimensionPixelSize(R.dimen.qb_px_20);
+            chapterTextSize = SettingActivity.getTextSize();
             chapters = chapter.getChapterName() + "  " + chapter.getChapterContent();
 
             TableRow chapterTableRow = createTableRow(chapters, chapterTextSize);
@@ -217,7 +213,7 @@ public class RegulationActivity extends AppCompatActivity {
 
             for (Regulation regulation : regulationsList) {
                 regulations = regulation.getRegulationName() + "  " + regulation.getRegulationContent();
-                int regulationTextSize = getResources().getDimensionPixelSize(R.dimen.qb_px_15);
+                int regulationTextSize = SettingActivity.getTextSize();
 
                 TableRow regulationTableRow = createTableRow(regulations, regulationTextSize);
 
@@ -238,12 +234,13 @@ public class RegulationActivity extends AppCompatActivity {
 
         textView.setText(content);
         textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSide);
+        textView.setBackground(this.getDrawable(R.drawable.text_view_background));
 
         tableRow.addView(textView);
 
         tableRow.setBackground(this.getDrawable(R.drawable.table_row_background_white));
 
-        tableRow.setOnClickListener(new RegulationOnClick(tableRow,tableFunction,content));
+        tableRow.setOnClickListener(new RegulationOnClick(tableRow, tableFunction, content));
         return tableRow;
 
     }
@@ -251,12 +248,12 @@ public class RegulationActivity extends AppCompatActivity {
     /**
      * 条例的点击效果
      */
-    private class RegulationOnClick implements View.OnClickListener,View.OnLongClickListener {
+    private class RegulationOnClick implements View.OnClickListener, View.OnLongClickListener {
         TableRow regulationTableRow;
         TableFunction tableFunction;
         String content;
 
-        public RegulationOnClick(TableRow regulationTableRow,TableFunction tableFunction,String content) {
+        public RegulationOnClick(TableRow regulationTableRow, TableFunction tableFunction, String content) {
             this.regulationTableRow = regulationTableRow;
             this.tableFunction = tableFunction;
             this.content = content;
@@ -305,9 +302,9 @@ public class RegulationActivity extends AppCompatActivity {
         PopupWindow indexWindow;
 
         /**
-         * @param tableRow 需要移动到控件位置的控件
-         * @param tableLayout  该控件的父控件
-         * @param indexWindow  弹出的窗口界面
+         * @param tableRow    需要移动到控件位置的控件
+         * @param tableLayout 该控件的父控件
+         * @param indexWindow 弹出的窗口界面
          */
         public ChapterOnClick(TableRow tableRow, TableLayout tableLayout, PopupWindow indexWindow) {
             this.tableRow = tableRow;
@@ -330,7 +327,7 @@ public class RegulationActivity extends AppCompatActivity {
      * @param lawId   所属法律编码
      * @param lawName 所属法律名字
      */
-    public static void setLaw(int lawId, String lawName) {
+    public static void setLaw(long lawId, String lawName) {
         RegulationActivity.lawId = lawId;
         RegulationActivity.lawName = lawName;
     }
@@ -348,7 +345,9 @@ public class RegulationActivity extends AppCompatActivity {
             startActivity(intent);
         }
     }
+
     private static ClipboardManager manager;
+
     /**
      * 复制的点击事件
      */
@@ -356,12 +355,13 @@ public class RegulationActivity extends AppCompatActivity {
         String content;
         TableLayout tableLayout;
 
-        public CopyOnClick(String content){
+        public CopyOnClick(String content) {
             this.content = content;
         }
+
         @Override
         public void onClick(View view) {
-            ClipData clipData =ClipData.newPlainText("Label", content);
+            ClipData clipData = ClipData.newPlainText("Label", content);
             //将ClipData数据复制到剪贴板：
             manager.setPrimaryClip(clipData);
 

@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author LIN
  * @date 2020/07/29
- * @lastDate 2020/08/05
+ * @lastDate 2020/08/07
  */
 public class RegulationDaoImpl implements RegulationDao {
 
@@ -38,7 +38,7 @@ public class RegulationDaoImpl implements RegulationDao {
     }
 
     @Override
-    public List<Regulation> selectRegulation(int chapterId) {
+    public List<Regulation> selectRegulation(long chapterId) {
         List<Regulation> regulationList = new ArrayList<>();
 
         String row = "regulation_id,chapter_id,regulation_name,regulation_content";
@@ -54,11 +54,11 @@ public class RegulationDaoImpl implements RegulationDao {
     }
 
     @Override
-    public List<Regulation> selectRegulation(int chapterId,String selectContent) {
+    public List<Regulation> selectRegulation(long chapterId, String selectContent) {
         List<Regulation> regulationList = new ArrayList<>();
 
         String row = "regulation_id,chapter_id,regulation_name,regulation_content";
-        String table = "REGULATIONS where chapter_id = " + chapterId + " and regulation_content like '%" + selectContent+"%'";
+        String table = "REGULATIONS where chapter_id = " + chapterId + " and regulation_content like '%" + selectContent + "%'";
         List<String[]> stringList = sqlStatementFunction.selectView(row, table);
         for (String[] str : stringList) {
             Regulation regulation = new Regulation(Integer.parseInt(str[0]), Integer.parseInt(str[1]), str[2], str[3]);

@@ -6,18 +6,19 @@ import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import com.example.law.R;
 import com.example.law.dao.impl.LawDaoImpl;
 import com.example.law.pojo.Law;
-import com.example.law.service.function.LayoutFunction;
+import com.example.law.service.function.TableFunction;
 import com.example.law.service.sqlite.DatabaseOpenHelper;
 
 import java.util.List;
@@ -25,7 +26,7 @@ import java.util.List;
 /**
  * @author 林书浩
  * @date 2020/07/29
- * @lastDate 2020/08/05
+ * @lastDate 2020/08/07
  */
 public class LawActivity extends AppCompatActivity {
 
@@ -33,26 +34,32 @@ public class LawActivity extends AppCompatActivity {
 
     LawDaoImpl lawDaoImpl;
 
-    LayoutFunction layoutFunction;
+    Button settingButton;
 
     LinearLayout selectLinearLayout;
 
-    TableRow choiceTableRow;
+    TableFunction tableFunction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.law);
 
+        SettingActivity.setTextSize(getResources().getDimensionPixelSize(R.dimen.qb_px_15));
+        SettingActivity.setTitleSize(getResources().getDimensionPixelSize(R.dimen.qb_px_20));
+
         DatabaseOpenHelper.getInstance(LawActivity.this);
         lawDaoImpl = new LawDaoImpl();
+
+        settingButton = findViewById(R.id.law_setting);
+        settingButton.setOnClickListener(new SettingOnClick());
 
         selectLinearLayout = findViewById(R.id.select);
         selectLinearLayout.setOnClickListener(new SelectOnClick());
 
-        layoutFunction = new LayoutFunction(LawActivity.this);
-
         lawTableLayout = findViewById(R.id.table);
+
+        tableFunction = new TableFunction(LawActivity.this);
         showTable();
     }
 
@@ -73,13 +80,14 @@ public class LawActivity extends AppCompatActivity {
             TextView lawTextView = new TextView(LawActivity.this);
             lawName = law.getLawName();
             lawTextView.setText(lawName);
-            lawTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.qb_px_20));
+            lawTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, SettingActivity.getTextSize());
             lawTextView.setGravity(Gravity.CENTER_VERTICAL);
+            lawTextView.setBackground(this.getDrawable(R.drawable.text_view_background));
 
-            lawTableRow.setOnClickListener(new LawOnClick(law.getLawId(), law.getLawName()));
+            lawTableRow.setOnClickListener(new LawOnClick(law.getLawId(), law.getLawName(),lawTableRow));
 
             lawTableRow.addView(lawTextView);
-            lawTableRow.setBackground(this.getDrawable(R.drawable.white_change_gray));
+            lawTableRow.setBackground(this.getDrawable(R.drawable.table_row_background_white));
 
             lawTableLayout.addView(lawTableRow);
         }
@@ -89,18 +97,21 @@ public class LawActivity extends AppCompatActivity {
      * 法律的点击效果
      */
     private class LawOnClick implements View.OnClickListener {
-        int lawId;
+        long lawId;
         String lawName;
+        TableRow lawTableRow;
 
-        public LawOnClick(int id, String name) {
+        public LawOnClick(long id, String name,TableRow lawTableRow) {
             super();
             this.lawId = id;
             this.lawName = name;
+            this.lawTableRow = lawTableRow;
         }
 
         @Override
         public void onClick(View view) {
             RegulationActivity.setLaw(lawId, lawName);
+            tableFunction.changeTableRow(lawTableRow);
             Intent intent = new Intent(LawActivity.this, RegulationActivity.class);
             startActivity(intent);
 
@@ -116,6 +127,18 @@ public class LawActivity extends AppCompatActivity {
         public void onClick(View view) {
             SelectActivity.setIsTitleSelect(true);
             Intent intent = new Intent(LawActivity.this, SelectActivity.class);
+            startActivity(intent);
+        }
+    }
+
+    /**
+     * 设置的点击事件
+     */
+    private class SettingOnClick implements View.OnClickListener {
+
+        @Override
+        public void onClick(View view) {
+            Intent intent = new Intent(LawActivity.this, SettingActivity.class);
             startActivity(intent);
         }
     }
