@@ -48,14 +48,14 @@ public class SettingActivity extends AppCompatActivity {
     public static int getTextSize(){
         return textSize;
     }
-    public static void setTextSize(int titleSize){
-        SettingActivity.titleSize = textSize;
+    public static void setTextSize(int textSize){
+        SettingActivity.textSize = textSize;
     }
     public static int getTitleSize(){
         return titleSize;
     }
     public static void setTitleSize(int titleSize){
-        SettingActivity.titleSize = textSize;
+        SettingActivity.titleSize = titleSize;
     }
 
     private class TextSizeOnSeekBarChange implements SeekBar.OnSeekBarChangeListener {
@@ -65,6 +65,7 @@ public class SettingActivity extends AppCompatActivity {
                 case 0:
                     setTextSize(getResources().getDimensionPixelSize(R.dimen.qb_px_12));
                     setTitleSize(getResources().getDimensionPixelSize(R.dimen.qb_px_17));
+                    seekBar.setProgress(i);
                     break;
                 case 1:
                     setTextSize(getResources().getDimensionPixelSize(R.dimen.qb_px_15));
