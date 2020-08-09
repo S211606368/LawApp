@@ -174,10 +174,10 @@ public class RegulationActivity extends AppCompatActivity {
      * @param chapterTableRow 获取该章节所在的位置
      */
     private void showIndexList(String chapters, int chapterTextSize, TableRow chapterTableRow,long chapterId) {
-        /*int length = 13;
+        int length = 13;
         if (chapters.length() > length) {
             chapters = chapters.substring(0, length) + "…";
-        }*/
+        }
         TableRow indexTableRow = new TableRow(RegulationActivity.this);
         RollTextView indexRollTextView = new RollTextView(RegulationActivity.this);
 
@@ -185,13 +185,6 @@ public class RegulationActivity extends AppCompatActivity {
         indexRollTextView.setWidth(getResources().getDimensionPixelSize(R.dimen.qb_px_250));
         indexRollTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, chapterTextSize);
         indexRollTextView.setBackground(this.getDrawable(R.drawable.text_view_background));
-
-        indexRollTextView.setSingleLine(true);
-        indexRollTextView.setEllipsize(TextUtils.TruncateAt.MARQUEE);
-        indexRollTextView.setFocusable(true);
-        indexRollTextView.setFocusableInTouchMode(true);
-        indexRollTextView.setSelected(true);
-        indexRollTextView.setMarqueeRepeatLimit(-1);
 
         indexTableRow.addView(indexRollTextView);
 

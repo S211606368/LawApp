@@ -18,6 +18,10 @@ import com.shufeng.greendao.gen.LawDao;
  * {@inheritDoc}
  * 
  * @see org.greenrobot.greendao.AbstractDaoSession
+ *
+ * @author 林书浩
+ * @date 2020/08/09
+ * @lestDate 2020/08/09
  */
 public class DaoSession extends AbstractDaoSession {
 

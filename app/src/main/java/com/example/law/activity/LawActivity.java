@@ -1,7 +1,11 @@
 package com.example.law.activity;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -37,6 +41,10 @@ public class LawActivity extends AppCompatActivity {
 
     TableFunction tableFunction;
 
+    final String SETTING = "setting";
+    final String TEXT_SIZE = "text_size";
+    final String TITLE_SIZE = "title_size";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,8 +63,16 @@ public class LawActivity extends AppCompatActivity {
 
         tableFunction = new TableFunction(LawActivity.this);
 
-        SettingActivity.setTextSize(getResources().getDimensionPixelSize(R.dimen.qb_px_15));
-        SettingActivity.setTitleSize(getResources().getDimensionPixelSize(R.dimen.qb_px_20));
+        SharedPreferences sharedPreferences;
+        sharedPreferences = getSharedPreferences(SETTING, Context.MODE_PRIVATE);
+
+        if (0 == sharedPreferences.getInt(TEXT_SIZE,0) && 0 == sharedPreferences.getInt(TITLE_SIZE,0)){
+            SettingActivity.setTextSize(getResources().getDimensionPixelSize(R.dimen.qb_px_15));
+            SettingActivity.setTitleSize(getResources().getDimensionPixelSize(R.dimen.qb_px_20));
+        }else{
+            SettingActivity.setTextSize(getResources().getDimensionPixelSize(sharedPreferences.getInt(TEXT_SIZE,0)));
+            SettingActivity.setTitleSize(getResources().getDimensionPixelSize(sharedPreferences.getInt(TITLE_SIZE,0)));
+        }
 
         showTable();
 
@@ -80,12 +96,12 @@ public class LawActivity extends AppCompatActivity {
             lawName = law.getLawName();
 
             lawTextView.setText(lawName);
-            lawTextView.setTextSize(SettingActivity.getTextSize());
+            lawTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX,SettingActivity.getTitleSize());
             lawTextView.setGravity(Gravity.CENTER_VERTICAL);
             lawTextView.setBackground(this.getDrawable(R.drawable.text_view_background));
 
             lawTableRow.setOnClickListener(new LawOnClick(law.getLawId(), law.getLawName(),lawTableRow));
-            lawTableRow.setBackground(this.getDrawable(R.drawable.table_row_background_white));
+            lawTableRow.setBackground(this.getDrawable(R.drawable.white_change_gray));
 
             lawTableRow.addView(lawTextView);
             lawTableLayout.addView(lawTableRow);
@@ -110,8 +126,8 @@ public class LawActivity extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             RegulationActivity.setLaw(lawId, lawName);
-            tableFunction.changeTableRow(lawTableRow);
-            Intent intent = new Intent(LawActivity.this, RegulationActivity.class);
+            //tableFunction.changeTableRow(lawTableRow);
+            Intent intent = new Intent( LawActivity.this, RegulationActivity.class);
             startActivity(intent);
 
         }
@@ -122,11 +138,13 @@ public class LawActivity extends AppCompatActivity {
      */
     public class SelectOnClick implements View.OnClickListener {
 
+        @SuppressLint("PrivateResource")
         @Override
         public void onClick(View view) {
             SelectActivity.setIsTitleSelect(true);
             Intent intent = new Intent(LawActivity.this, SelectActivity.class);
             startActivity(intent);
+            overridePendingTransition(R.anim.abc_slide_in_top, R.anim.abc_slide_out_bottom);
         }
     }
 
@@ -137,6 +155,7 @@ public class LawActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View view) {
+            finish();
             Intent intent = new Intent(LawActivity.this, SettingActivity.class);
             startActivity(intent);
         }

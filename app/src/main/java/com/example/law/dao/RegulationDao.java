@@ -32,8 +32,8 @@ public interface RegulationDao {
      * 查询含有关键字的条例
      *
      * @param chapterId 传入所属章节的id
-     * @param Context   需要查询的关键字
+     * @param context   需要查询的关键字
      * @return 返回条例集合
      */
-    public List<Regulation> selectRegulation(long chapterId, String Context);
+    public List<Regulation> selectRegulation(long chapterId, String context);
 }

@@ -1,6 +1,10 @@
 package com.example.law.activity;
 
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -20,6 +24,7 @@ public class SettingActivity extends AppCompatActivity {
 
     SeekBar textSizeSeekBar;
     SeekBar textStyleSeekBar;
+    SharedPreferences sharedPreferences;
 
     static int textSize;
     static int titleSize;
@@ -30,6 +35,7 @@ public class SettingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.setting);
+        sharedPreferences = getSharedPreferences("setting", Context.MODE_PRIVATE);
 
         goBackImage = findViewById(R.id.go_back);
         goBackImage.setOnClickListener(new GoBackOnClick());
@@ -45,7 +51,17 @@ public class SettingActivity extends AppCompatActivity {
 
     }
 
-
+    /**
+     * 返回效果
+     */
+    @Override
+    protected void onPause() {
+        // TODO Auto-generated method stub
+        super.onPause();
+        Intent intent = new Intent(SettingActivity.this, LawActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.left_in, R.anim.right_out);
+    }
 
 
     /**
@@ -88,36 +104,33 @@ public class SettingActivity extends AppCompatActivity {
      * 修改字体大小的滑动条
      */
     private class TextSizeOnSeekBarChange implements SeekBar.OnSeekBarChangeListener {
-        int textSize;
-        int titleSize;
         @Override
         public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
             switch (i){
                 case 0:
-                    textSize = R.dimen.qb_px_10;
-                    titleSize = R.dimen.qb_px_15;
-                    changeSize(textSize,titleSize,i);
+                    sharedPreferences.edit().clear().apply();
+                    sharedPreferences.edit().putInt("text_size",R.dimen.qb_px_10).putInt("title_size",R.dimen.qb_px_15).apply();
+                    changeSize(sharedPreferences.getInt("text_size",0),sharedPreferences.getInt("title_size",0),i);
                     break;
                 case 1:
-                    textSize = R.dimen.qb_px_15;
-                    titleSize = R.dimen.qb_px_20;
-                    changeSize(textSize,titleSize,i);
+                    sharedPreferences.edit().clear().apply();
+                    sharedPreferences.edit().putInt("text_size",R.dimen.qb_px_15).putInt("title_size",R.dimen.qb_px_20).apply();
+                    changeSize(sharedPreferences.getInt("text_size",0),sharedPreferences.getInt("title_size",0),i);
                     break;
                 case 2:
-                    textSize = R.dimen.qb_px_20;
-
-                    titleSize = R.dimen.qb_px_25;
-                    changeSize(textSize,titleSize,i);
+                    sharedPreferences.edit().clear().apply();
+                    sharedPreferences.edit().putInt("text_size",R.dimen.qb_px_20).putInt("title_size",R.dimen.qb_px_25).apply();
+                    changeSize(sharedPreferences.getInt("text_size",0),sharedPreferences.getInt("title_size",0),i);
                     break;
                 case 3:
-                    textSize = R.dimen.qb_px_25;
-                    titleSize = R.dimen.qb_px_30;
-                    changeSize(textSize,titleSize,i);
+                    sharedPreferences.edit().clear().apply();
+                    sharedPreferences.edit().putInt("text_size",R.dimen.qb_px_25).putInt("title_size",R.dimen.qb_px_30).apply();
+                    changeSize(sharedPreferences.getInt("text_size",0),sharedPreferences.getInt("title_size",0),i);
                     break;
                 case 4:
-                    textSize = R.dimen.qb_px_35;
-                    titleSize = R.dimen.qb_px_40;
-                    changeSize(textSize,titleSize,i);
+                    sharedPreferences.edit().clear().apply();
+                    sharedPreferences.edit().putInt("text_size",R.dimen.qb_px_30).putInt("title_size",R.dimen.qb_px_35).apply();
+                    changeSize(sharedPreferences.getInt("text_size",0),sharedPreferences.getInt("title_size",0),i);
                     break;
                 default:break;
             }
@@ -130,14 +143,14 @@ public class SettingActivity extends AppCompatActivity {
 
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
+
         }
     }
 
-    public void changeSize(int textSize,int titleSize,int i){
+    public void changeSize(int textSize,int titleSize,int id){
         setTextSize(getResources().getDimensionPixelSize(textSize));
         setTitleSize(getResources().getDimensionPixelSize(titleSize));
-        SettingActivity.setSizeId(i);
-        SettingActivity.setSizeId(i);
+        SettingActivity.setSizeId(id);
     }
 
     /**

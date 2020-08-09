@@ -25,7 +25,9 @@ public class RollTextView extends TextView {
         super(context, attrs, defStyle);
     }
 
-    //重写这个方法，返回为true，让TextView一直获取焦点
+    /**
+     * 重写这个方法，返回为true，让TextView一直获取焦点
+     */
     @Override
     public boolean isFocused() {
         return true;

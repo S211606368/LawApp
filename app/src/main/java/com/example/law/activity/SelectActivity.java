@@ -249,13 +249,24 @@ public class SelectActivity extends AppCompatActivity {
     }
 
     /**
-     * 返回上一页面
+     * 返回效果
      */
+    @Override
+    protected void onPause() {
+        // TODO Auto-generated method stub
+        super.onPause();
+        overridePendingTransition(R.anim.abc_slide_in_bottom, R.anim.abc_slide_out_top);
+    }
+
+        /**
+         * 返回上一页面
+         */
     private class GoBackOnClick implements View.OnClickListener {
 
         @Override
         public void onClick(View view) {
             SelectActivity.this.finish();
+            overridePendingTransition(R.anim.abc_slide_in_bottom, R.anim.abc_slide_out_top);
         }
     }
 
@@ -285,7 +296,8 @@ public class SelectActivity extends AppCompatActivity {
             RegulationActivity.setLaw(lawId, lawName);
             Intent intent = new Intent(SelectActivity.this, RegulationActivity.class);
             startActivity(intent);
-
+            overridePendingTransition(R.anim.abc_slide_in_bottom, R.anim.abc_slide_out_top);
+            finish();
         }
     }
 
@@ -307,7 +319,8 @@ public class SelectActivity extends AppCompatActivity {
             RegulationActivity.setLaw(lawId, lawName);
             Intent intent = new Intent(SelectActivity.this, RegulationActivity.class);
             startActivity(intent);
-
+            overridePendingTransition(R.anim.abc_slide_in_bottom, R.anim.abc_slide_out_top);
+            finish();
         }
     }
 
